@@ -39,9 +39,11 @@ export default function RootLayout({
 			>
 				<PostHogProvider>
 					<Header />
-					<main className='container mx-auto px-4 flex-grow flex-1 flex flex-col gap-8 '>
-						{children}
-					</main>
+					<div className='flex'>
+						<main className='container mx-auto px-4 flex-grow flex-1 flex flex-col gap-8 '>
+							{children}
+						</main>
+					</div>
 					<Footer />
 				</PostHogProvider>
 			</body>

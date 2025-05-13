@@ -2,12 +2,13 @@
 
 import { SidebarItem } from '@/shared/ui/sidebar-item'
 import {
+	Armchair,
 	Contact,
+	Hammer,
 	HelpCircle,
 	RussianRuble,
 	Star,
 	Wrench,
-	Zap,
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
@@ -30,19 +31,19 @@ export function Sidebar({ onLinkClick }: SidebarProps) {
 
 	const menuItems = [
 		{
-			href: '/contacts',
-			icon: <Contact />,
-			text: 'Контакты',
+			href: '/services/master-na-chas',
+			icon: <Hammer />,
+			text: 'Муж на час',
 		},
 		{
-			href: '/',
-			icon: <Zap />,
-			text: 'Услуги электрика',
-		},
-		{
-			href: '/',
+			href: '/services/sanitehnik',
 			icon: <Wrench />,
-			text: 'Услуги сантехника',
+			text: 'Сантехник',
+		},
+		{
+			href: '/services/sborka-mebeli',
+			icon: <Armchair />,
+			text: 'Сборщик мебели',
 		},
 		{
 			href: '/price',
@@ -56,8 +57,13 @@ export function Sidebar({ onLinkClick }: SidebarProps) {
 		},
 		{
 			href: '/vacancies',
-			icon: <Star  />,
+			icon: <Star />,
 			text: 'Стать мастером',
+		},
+		{
+			href: '/contacts',
+			icon: <Contact />,
+			text: 'Контакты',
 		},
 	]
 

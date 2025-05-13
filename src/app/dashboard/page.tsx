@@ -10,7 +10,7 @@ export default function DashboardPage() {
 					Выберите опцию
 				</h1>
 
-				<div className='grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:gap-10'>
+				<div className='flex overflow-x-auto pb-4 md:pb-0 md:overflow-visible snap-x snap-mandatory md:grid md:grid-cols-2 md:gap-6 lg:gap-10 space-x-4 md:space-x-0'>
 					{/* Карточка "Нужен мастер" */}
 					{/* <Link href='/find-master' className='group'>
 						<div className='bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 h-full'>
@@ -59,72 +59,31 @@ export default function DashboardPage() {
 							</div>
 						</div>
 					</Link> */}
-					<CardMaster
-						color='bg-gradient-to-br from-purple-500 to-indigo-600'
-						href='/'
-						title='Нужен мастер'
-						description='Найдите профессионала для решения ваших задач быстро и безопасно'
-						image='/png/dashboard/woman.webp'
-						buttonText='Найти мастера'
-						iconText='Бесплатный поиск'
-						icon={<SearchCheck className='w-5 h-5 flex-shrink-0' />}
-					/>
+					<div className='min-w-[80vw] snap-center md:min-w-0'>
+						<CardMaster
+							color='bg-gradient-to-br from-purple-500 to-indigo-600'
+							href='/'
+							title='Нужен мастер'
+							description='Найдите профессионала для решения ваших задач быстро и безопасно'
+							image='/png/dashboard/woman.webp'
+							buttonText='Найти мастера'
+							iconText='Бесплатный поиск'
+							icon={<SearchCheck className='w-5 h-5 flex-shrink-0' />}
+						/>
+					</div>
 
-					<CardMaster
-						color='bg-gradient-to-br from-blue-500/90 to-indigo-600/90'
-						href='/vacancies'
-						title='Стать мастером'
-						description='Предложите свои услуги и найдите новых клиентов на нашей платформе'
-						image='/png/page-master/master-dashboard.webp'
-						buttonText='Стать мастером'
-						iconText='Бесплатная регистрация'
-						icon={<UserRoundPlus className='w-5 h-5 flex-shrink-0' />}
-					/>
-					{/* Карточка "Стать мастером" */}
-					{/* <Link href='/become-master' className='group'>
-						<div className='bg-gradient-to-br from-blue-500/90 to-indigo-600/90 rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 h-full'>
-							<div className='relative h-48 sm:h-64 md:h-72 lg:h-80'>
-								<Image
-									src='/png/page-master/master-dashboard.webp'
-									alt='Мастер'
-									fill
-									className='object-contain lg:object-[center_30%]'
-									sizes='(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 600px'
-									priority
-								/>
-								<div className='absolute inset-0 bg-gradient-to-t from-blue-900/80 to-transparent'></div>
-							</div>
-							<div className='p-6 sm:p-8 text-white'>
-								<h2 className='text-xl sm:text-2xl font-bold mb-3 sm:mb-4'>
-									Стать мастером
-								</h2>
-								<p className='text-red-100 mb-4 sm:mb-6 text-sm sm:text-base'>
-									Предложите свои услуги и найдите новых клиентов на нашей
-									платформе
-								</p>
-								<div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0'>
-									<span className='flex items-center gap-2 text-sm sm:text-base'>
-										<svg
-											xmlns='http://www.w3.org/2000/svg'
-											className='h-5 w-5'
-											viewBox='0 0 20 20'
-											fill='currentColor'
-										>
-											<path
-												fillRule='evenodd'
-												d='M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z'
-												clipRule='evenodd'
-											/>
-										</svg>
-										Проверенные клиенты
-									</span>
-									<button className='bg-white text-indigo-600 font-medium py-2 px-6 rounded-full hover:bg-indigo-50 transition-colors duration-300 w-full sm:w-auto text-center'>
-										Регистрация
-									</button>
-								</div>
-							</div>
-						</div>
-					</Link> */}
+					<div className='min-w-[80vw] snap-center md:min-w-0'>
+						<CardMaster
+							color='bg-gradient-to-br from-blue-500/90 to-indigo-600/90'
+							href='/vacancies'
+							title='Стать мастером'
+							description='Предложите свои услуги и найдите новых клиентов на нашей платформе'
+							image='/png/page-master/master-dashboard.webp'
+							buttonText='Стать мастером'
+							iconText='Бесплатная регистрация'
+							icon={<UserRoundPlus className='w-5 h-5 flex-shrink-0' />}
+						/>
+					</div>
 				</div>
 			</div>
 		</main>

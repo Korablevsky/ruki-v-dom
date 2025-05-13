@@ -8,7 +8,7 @@ type CardMasterProps = {
 	title: string
 	description: string
 	image: string
-	buttonText: string
+	buttonText?: string
 	color: string
 	buttonColor?: string
 	buttonTextColor?: string
@@ -25,6 +25,8 @@ export function CardMaster(props: CardMasterProps) {
 					props.color
 				)}
 			>
+				{/* <SkeletonCard /> */}
+
 				<div className='relative h-[400px] md:h-72 lg:h-80 transition-transform duration-300 md:group-hover:scale-105'>
 					<Image
 						src={props.image}
@@ -50,17 +52,19 @@ export function CardMaster(props: CardMasterProps) {
 								{props.iconText}
 							</span>
 						)}
-						<Button
-							className={cn(
-								'bg-white text-base text-indigo-600 font-medium py-2 px-6 rounded-full hover:bg-purple-600 transition-colors duration-300 w-full text-center hover:text-white cursor-pointer',
-								props.buttonColor,
-								!props.icon && !props.iconText && 'lg:w-full',
-								(props.icon || props.iconText) && 'lg:w-auto'
-							)}
-							variant='outline'
-						>
-							{props.buttonText}
-						</Button>
+						{props.buttonText && (
+							<Button
+								className={cn(
+									'bg-white text-base text-indigo-600 font-medium py-2 px-6 rounded-full hover:bg-purple-600 transition-colors duration-300 w-full text-center hover:text-white cursor-pointer',
+									props.buttonColor,
+									!props.icon && !props.iconText && 'lg:w-full',
+									(props.icon || props.iconText) && 'lg:w-auto'
+								)}
+								variant='outline'
+							>
+								{props.buttonText}
+							</Button>
+						)}
 					</div>
 				</div>
 			</div>
