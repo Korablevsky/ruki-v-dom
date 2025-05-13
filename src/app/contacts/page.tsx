@@ -1,8 +1,32 @@
+import { Metadata } from 'next'
 import Link from 'next/link'
+import Script from 'next/script'
+
+export const metadata: Metadata = {
+	title: '11111',
+	description:
+		'Руки в дом – Помогает найти специалистов, которые сделают работу быстро и качественно',
+	icons: {
+		icon: '/favicon.png',
+	},
+}
 
 export default function ContactsPage() {
 	return (
 		<main className='  py-10 '>
+			<Script
+				id='webpage-schema'
+				type='application/ld+json'
+				dangerouslySetInnerHTML={{
+					__html: JSON.stringify({
+						'@context': 'https://schema.org',
+						'@type': 'WebPage',
+						name: 'Контакты',
+						description: 'Описание страницы',
+						url: 'https://rukivdom.ru/contacts',
+					}),
+				}}
+			/>
 			<h1 className='text-2xl font-bold text-indigo-700 mb-6'>Контакты</h1>
 
 			<div className='grid md:grid-cols-2 gap-8'>

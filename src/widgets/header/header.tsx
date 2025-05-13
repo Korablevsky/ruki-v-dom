@@ -34,7 +34,7 @@ export function Header() {
 			<nav className='flex items-center gap-2'>
 				<Link
 					href='tel:+79534574099'
-					className='flex items-center gap-2 px-3 py-1.5 transition-colors bg-indigo-600 text-white rounded-md '
+					className='flex items-center gap-2 px-3 py-1.5 transition-colors bg-gradient-to-br from-blue-500 to-indigo-600  text-white rounded-md '
 				>
 					<PhoneOutgoing className='w-6 h-6  transition-colors' />
 					Позвонить

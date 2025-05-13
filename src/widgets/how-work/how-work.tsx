@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 export function HowWork() {
 	return (
-		<section className='flex flex-col gap-4 py-6 md:py-10 -mx-4 bg-gradient-to-br from-indigo-500 via-indigo-600 to-indigo-700'>
+		<section className='flex flex-col gap-4 py-6 md:py-10 -mx-4 bg-gradient-to-tl from-purple-500 to-indigo-600'>
 			<h2 className='text-xl md:text-2xl lg:text-3xl text-white font-bold text-center mb-1 md:mb-2 lg:mb-4'>
 				Как мы работаем
 			</h2>
@@ -15,8 +15,8 @@ export function HowWork() {
 						<>
 							Позвоните или напишите нам в{' '}
 							<Link
-								href='https://t.me/your_telegram'
-								className='text-[#0088cc] underline hover:text-gray-200'
+								href='https://t.me/korablevsky'
+								className='text-[#0088cc] font-medium  underline hover:text-blue-600 '
 								target='_blank'
 								rel='noopener noreferrer'
 							>
@@ -24,8 +24,8 @@ export function HowWork() {
 							</Link>{' '}
 							или{' '}
 							<Link
-								href='https://wa.me/your_whatsapp'
-								className='text-[#25D366] underline hover:text-gray-200'
+								href='https://wa.me/79534574099'
+								className='text-[#25D366] font-medium underline hover:text-green-600 '
 								target='_blank'
 								rel='noopener noreferrer'
 							>

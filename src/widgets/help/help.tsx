@@ -28,7 +28,7 @@ export function Help() {
 					Позвоните или напишите нам в{' '}
 					<Link
 						href='https://t.me/your_telegram'
-						className='text-[#0088cc] underline hover:text-gray-200'
+						className='text-[#0088cc] font-medium underline hover:text-blue-600'
 						target='_blank'
 						rel='noopener noreferrer'
 					>
@@ -37,7 +37,7 @@ export function Help() {
 					или{' '}
 					<Link
 						href='https://wa.me/your_whatsapp'
-						className='text-[#25D366] underline hover:text-gray-200'
+						className='text-[#25D366] font-medium underline hover:text-green-600'
 						target='_blank'
 						rel='noopener noreferrer'
 					>
