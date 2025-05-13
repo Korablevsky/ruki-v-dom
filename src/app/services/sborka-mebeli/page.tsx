@@ -14,7 +14,7 @@ export default function SborkaMebelPage() {
 			<div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
 				<CardMainPage
 					bgColor='bg-gradient-to-br from-sky-500/90 to-violet-600/90'
-					image='/png/page-master/page-master.webp'
+					image='/png/page-master/master-dashboard.webp'
 					title='Быстрый и качественный ремонт'
 					description='Доверьте свой дом профессионалам. Мастер выполнит работу оперативно и качественно.'
 				/>

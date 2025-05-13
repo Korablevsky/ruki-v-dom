@@ -23,12 +23,12 @@ export function DashboardOrder() {
 					Вызвать мастера
 				</Button>
 			</div>
-			<div className='relative w-full lg:w-96 h-72 transform hover:scale-105 transition-transform duration-300 order-first lg:order-last'>
+			<div className='relative w-full md:w-[350px] h-96 transform hover:scale-105 transition-transform duration-300 order-first lg:order-last'>
 				<Image
-					src='/png/page-master/master-dashboard.webp'
+					src='/png/page-master/page-master.webp'
 					alt='Мастер на час'
 					fill
-					className='object-contain drop-shadow-2xl [filter:drop-shadow(0_10px_15px_rgba(0,0,0,0.4))]'
+					className='object-cover object-top drop-shadow-2xl [filter:drop-shadow(0_10px_15px_rgba(0,0,0,0.4))]'
 					priority
 				/>
 			</div>

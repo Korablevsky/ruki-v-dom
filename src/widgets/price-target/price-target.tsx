@@ -29,8 +29,8 @@ export function PriceTarget() {
 	]
 
 	return (
-		<section className=' bg-gradient-to-br from-purple-500 to-indigo-600 py-10 -mx-4 p-2 '>
-			<h2 className='text-xl font-bold mb-4 text-center text-white'>Цены на услуги</h2>
+		<section className=' bg-gradient-to-br from-purple-500 to-indigo-600 py-10 -mx-4 md:mx-0 md:rounded-2xl p-2 '>
+			<h2 className='text-xl font-bold mb-4 md:mb-8 text-center text-white'>Цены на услуги</h2>
 		
 		<div className='max-h-[calc(100vh-200px)] p-2 overflow-auto relative'>
 			<Table className='rounded-md'>

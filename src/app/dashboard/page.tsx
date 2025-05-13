@@ -61,7 +61,7 @@ export default function DashboardPage() {
 					</Link> */}
 					<CardMaster
 						color='bg-gradient-to-br from-purple-500 to-indigo-600'
-						href='/find-master'
+						href='/'
 						title='Нужен мастер'
 						description='Найдите профессионала для решения ваших задач быстро и безопасно'
 						image='/png/dashboard/woman.webp'
@@ -72,7 +72,7 @@ export default function DashboardPage() {
 
 					<CardMaster
 						color='bg-gradient-to-br from-blue-500/90 to-indigo-600/90'
-						href='/become-master'
+						href='/vacancies'
 						title='Стать мастером'
 						description='Предложите свои услуги и найдите новых клиентов на нашей платформе'
 						image='/png/page-master/master-dashboard.webp'
