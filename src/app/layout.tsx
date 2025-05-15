@@ -4,7 +4,9 @@ import { Header } from '@/widgets/header/header'
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import Head from 'next/head'
+import { Toaster } from 'sonner'
 import './globals.css'
+
 const geistSans = Geist({
 	variable: '--font-geist-sans',
 	subsets: ['latin'],
@@ -45,6 +47,7 @@ export default function RootLayout({
 						</main>
 					</div>
 					<Footer />
+					<Toaster richColors position='bottom-right' />
 				</PostHogProvider>
 			</body>
 		</html>

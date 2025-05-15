@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 type CardMasterProps = {
-	href: string
+	href?: string
 	title: string
 	description: string
 	image: string
@@ -17,8 +17,9 @@ type CardMasterProps = {
 }
 
 export function CardMaster(props: CardMasterProps) {
+
 	return (
-		<Link href={props.href} className='group'>
+		<Link href={props.href || ''} className='group'>
 			<div
 				className={cn(
 					'bg-gradient-to-br rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 transform h-full hover:bg-gradient-to-tl pt-4 flex flex-col',
@@ -39,10 +40,10 @@ export function CardMaster(props: CardMasterProps) {
 					<div className='absolute inset-0 bg-gradient-to-t from-blue-900/80 to-transparent'></div>
 				</div>
 				<div className='p-6 sm:p-8 text-white flex flex-col flex-grow'>
-					<h2 className='text-2xl sm:text-3xl font-bold mb-3 sm:mb-4'>
+					<h2 className='text-xl sm:text-2xl font-bold mb-3 sm:mb-4'>
 						{props.title}
 					</h2>
-					<p className='text-blue-100 mb-4 sm:mb-6 text-base sm:text-lg'>
+					<p className='text-blue-100 mb-4 leading-5 sm:mb-6 text-base sm:text-base'>
 						{props.description}
 					</p>
 					<div className='flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 lg:gap-0 mt-auto'>

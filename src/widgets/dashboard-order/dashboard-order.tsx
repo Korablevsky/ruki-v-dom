@@ -1,4 +1,4 @@
-import { Button } from '@/shared/ui/button'
+import { ModalOrderForm } from '@/features/telegram-message/modal-order-form'
 import Image from 'next/image'
 
 export function DashboardOrder() {
@@ -16,12 +16,8 @@ export function DashboardOrder() {
 						от 500 ₽
 					</p>
 				</div>
-				<Button
-					variant='outline'
-					className='w-full bg-white text-indigo-600 hover:bg-indigo-600 hover:text-white transition-all duration-300 text-lg font-semibold py-6 rounded-xl shadow-lg hover:shadow-xl cursor-pointer'
-				>
-					Вызвать мастера
-				</Button>
+				
+				<ModalOrderForm />
 			</div>
 			<div className='relative w-full md:w-[350px] h-96 transform hover:scale-105 transition-transform duration-300 order-first lg:order-last'>
 				<Image

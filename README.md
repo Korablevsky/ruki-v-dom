@@ -34,4 +34,24 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
 # ruki-v-dom
+
+## Настройка отправки заявок в Telegram
+
+Для настройки отправки заявок в Telegram необходимо:
+
+1. Создать бота через [@BotFather](https://t.me/BotFather) и получить токен бота
+2. Получить ID чата или канала, куда будут отправляться заявки
+3. Создать файл `.env.local` в корне проекта со следующими переменными:
+
+```bash
+# Телеграм бот для отправки заявок
+NEXT_PUBLIC_TELEGRAM_BOT_TOKEN=your_bot_token_here
+NEXT_PUBLIC_TELEGRAM_CHAT_ID=your_chat_id_here
+```
+
+Где:
+
+- `your_bot_token_here` - токен вашего бота
+- `your_chat_id_here` - ID чата или канала
