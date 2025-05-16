@@ -6,6 +6,9 @@
 import { fileTypeFromBuffer } from 'file-type'
 import sharp from 'sharp'
 
+// Максимальный размер файла для обработки (5MB)
+const MAX_FILE_SIZE = 5 * 1024 * 1024
+
 interface OrderFormData {
 	lastName: string
 	firstName: string
@@ -17,14 +20,16 @@ interface OrderFormData {
 }
 
 /**
- * Конвертирует изображение в формат JPEG
+ * Конвертирует изображение в формат JPEG и оптимизирует его размер
  */
-async function convertImageToJpeg(
+async function processImage(
 	arrayBuffer: ArrayBuffer,
 	fileName: string
-): Promise<{ buffer: Buffer; success: boolean }> {
+): Promise<{ buffer: Buffer; success: boolean; mimeType: string }> {
 	try {
-		console.log(`Начало конвертации ${fileName} в JPEG...`)
+		console.log(
+			`Начало обработки ${fileName}, размер: ${arrayBuffer.byteLength} байт`
+		)
 
 		// Определяем тип файла по содержимому
 		const buffer = Buffer.from(arrayBuffer)
@@ -35,22 +40,53 @@ async function convertImageToJpeg(
 			fileType?.mime || 'неизвестный'
 		)
 
-		// Конвертируем с помощью sharp
-		const jpegBuffer = await sharp(buffer, {
+		// Используем sharp для обработки изображения
+		const image = sharp(buffer, {
 			failOnError: false, // Не выбрасывать ошибку при проблемах с форматом
 		})
-			.jpeg({ quality: 85 })
+
+		// Получаем метаданные изображения
+		const metadata = await image.metadata()
+		console.log(
+			`Метаданные изображения ${fileName}:`,
+			metadata.width,
+			'x',
+			metadata.height,
+			'формат:',
+			metadata.format
+		)
+
+		// Определяем, нужно ли уменьшить размер
+		const needsResize = metadata.width && metadata.width > 1200
+
+		// Обрабатываем изображение
+		let processedImage = image
+
+		if (needsResize) {
+			processedImage = processedImage.resize({
+				width: 1200,
+				withoutEnlargement: true,
+			})
+		}
+
+		// Конвертируем в JPEG с оптимизацией качества
+		const jpegBuffer = await processedImage
+			.jpeg({ quality: 80, mozjpeg: true })
 			.toBuffer()
 
 		console.log(
-			`Конвертация ${fileName} в JPEG успешно завершена, размер: ${jpegBuffer.length} байт`
+			`Обработка ${fileName} успешно завершена, новый размер: ${jpegBuffer.length} байт`
 		)
 
-		return { buffer: jpegBuffer, success: true }
+		return { buffer: jpegBuffer, success: true, mimeType: 'image/jpeg' }
 	} catch (error) {
-		console.error(`Ошибка при конвертации ${fileName} в JPEG:`, error)
-		// Если конвертация не удалась, возвращаем исходный буфер с флагом неудачи
-		return { buffer: Buffer.from(arrayBuffer), success: false }
+		console.error(`Ошибка при обработке ${fileName}:`, error)
+		// Если обработка не удалась, возвращаем исходный буфер с флагом неудачи
+		return {
+			buffer: Buffer.from(arrayBuffer),
+			success: false,
+			mimeType: 'application/octet-stream',
+		}
 	}
 }
 
@@ -120,127 +156,98 @@ export async function sendOrderDataToTelegram(
 
 			// Если есть фотографии, отправляем их
 			if (data.photos && data.photos.length > 0) {
-				// Обрабатываем не более 5 фотографий для снижения нагрузки на мобильных устройствах
+				// Обрабатываем не более 5 фотографий для снижения нагрузки
 				const limitedPhotos = data.photos.slice(0, 5)
 
 				for (const photo of limitedPhotos) {
 					try {
+						// Проверяем размер файла
+						if (photo.size > MAX_FILE_SIZE) {
+							console.warn(
+								`Файл слишком большой (${photo.size} байт), пропускаем:`,
+								photo.name
+							)
+							continue
+						}
+
 						// Преобразуем File в ArrayBuffer
 						const arrayBuffer = await photo.arrayBuffer()
 
-						// Проверяем размер файла и при необходимости уменьшаем его
-						if (arrayBuffer.byteLength > 10000000) {
-							// Предел ~10MB
-							console.warn('Файл слишком большой, пропускаем:', photo.name)
-							continue
-						}
+						// Обрабатываем изображение (конвертация + оптимизация)
+						const {
+							buffer: processedBuffer,
+							success,
+							mimeType,
+						} = await processImage(arrayBuffer, photo.name)
 
 						// Создаем FormData для отправки файла
 						const formData = new FormData()
 						formData.append('chat_id', chatId)
 						formData.append('caption', `Фото: ${photo.name}`)
 
-						// Определяем тип файла по содержимому и расширению
-						const buffer = Buffer.from(arrayBuffer)
-						const fileType = await fileTypeFromBuffer(buffer)
-						const fileExtension =
-							photo.name.split('.').pop()?.toLowerCase() || ''
+						// Определяем имя файла для отправки
+						const fileName =
+							success && mimeType === 'image/jpeg'
+								? `${photo.name.split('.')[0]}.jpg`
+								: photo.name
 
-						console.log(
-							`Файл ${photo.name}, тип: ${photo.type}, определенный тип: ${
-								fileType?.mime || 'неизвестный'
-							}, расширение: ${fileExtension}`
+						console.log(`Отправка файла ${fileName} в Telegram...`)
+
+						// Добавляем файл в форму
+						formData.append(
+							'photo',
+							new Blob([processedBuffer], { type: mimeType }),
+							fileName
 						)
 
-						// Проверяем формат файла
-						const isHeifFormat =
-							photo.type === 'image/heif' ||
-							photo.type === 'image/heic' ||
-							fileType?.mime === 'image/heif' ||
-							fileType?.mime === 'image/heic' ||
-							fileExtension === 'heic' ||
-							fileExtension === 'heif'
+						// Отправляем фото
+						const photoResponse = await fetch(
+							`https://api.telegram.org/bot${botToken}/sendPhoto`,
+							{
+								method: 'POST',
+								body: formData,
+								cache: 'no-store',
+							}
+						)
 
-						if (isHeifFormat) {
-							// Конвертируем HEIF/HEIC в JPEG
-							console.log(
-								'Обнаружен формат HEIF/HEIC, начинаем конвертацию:',
-								photo.name
-							)
+						const responseText = await photoResponse.text()
 
-							try {
-								const { buffer: jpegBuffer, success } =
-									await convertImageToJpeg(arrayBuffer, photo.name)
+						if (!photoResponse.ok) {
+							console.error('Ошибка при отправке фото:', responseText)
 
-								if (success) {
-									const fileName = `${photo.name.split('.')[0]}.jpg`
-									console.log(`Отправляем конвертированный файл ${fileName}`)
-									formData.append(
-										'photo',
-										new Blob([jpegBuffer], { type: 'image/jpeg' }),
-										fileName
+							// Если не удалось отправить как фото, пробуем отправить как документ
+							if (photoResponse.status === 400) {
+								console.log('Пробуем отправить как документ...')
+
+								const docFormData = new FormData()
+								docFormData.append('chat_id', chatId)
+								docFormData.append('caption', `Файл: ${photo.name}`)
+								docFormData.append(
+									'document',
+									new Blob([processedBuffer], { type: mimeType }),
+									fileName
+								)
+
+								const docResponse = await fetch(
+									`https://api.telegram.org/bot${botToken}/sendDocument`,
+									{
+										method: 'POST',
+										body: docFormData,
+										cache: 'no-store',
+									}
+								)
+
+								if (!docResponse.ok) {
+									console.error(
+										'Ошибка при отправке документа:',
+										await docResponse.text()
 									)
 								} else {
-									// Если конвертация не удалась, попробуем отправить как есть
-									console.log(
-										`Конвертация не удалась, пробуем отправить оригинал: ${photo.name}`
-									)
-									formData.append(
-										'photo',
-										new Blob([arrayBuffer], {
-											type: photo.type || 'application/octet-stream',
-										}),
-										photo.name
-									)
+									console.log('Файл успешно отправлен как документ')
 								}
-							} catch (convError) {
-								console.error('Ошибка в процессе конвертации:', convError)
-								// В случае ошибки, пробуем отправить как есть
-								formData.append(
-									'photo',
-									new Blob([arrayBuffer], {
-										type: photo.type || 'application/octet-stream',
-									}),
-									photo.name
-								)
 							}
 						} else {
-							// Используем исходный формат
-							console.log(`Отправляем файл в исходном формате: ${photo.name}`)
-							formData.append(
-								'photo',
-								new Blob([arrayBuffer], {
-									type:
-										photo.type || fileType?.mime || 'application/octet-stream',
-								}),
-								photo.name
-							)
-						}
-
-						// Отправляем фото
-						console.log(`Отправка файла ${photo.name} в Telegram...`)
-
-						try {
-							const photoResponse = await fetch(
-								`https://api.telegram.org/bot${botToken}/sendPhoto`,
-								{
-									method: 'POST',
-									body: formData,
-									cache: 'no-store',
-								}
-							)
-
-							const responseText = await photoResponse.text()
-
-							if (!photoResponse.ok) {
-								console.error('Ошибка при отправке фото:', responseText)
-							} else {
-								console.log(`Файл ${photo.name} успешно отправлен в Telegram`)
-								console.log('Ответ API:', responseText)
-							}
-						} catch (e) {
-							console.error('Ошибка при отправке фото в Telegram:', e)
-							// Продолжаем с другими фото, даже если одно не удалось отправить
+							console.log(`Файл ${fileName} успешно отправлен в Telegram`)
 						}
 					} catch (e) {
 						console.error('Ошибка при обработке фото:', e)
