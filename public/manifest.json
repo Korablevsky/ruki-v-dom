@@ -1,0 +1,16 @@
+{
+	"name": "Руки в дом",
+	"short_name": "Руки в дом",
+	"description": "Руки в дом – Помогает найти специалистов, которые сделают работу быстро и качественно",
+	"start_url": "/",
+	"display": "standalone",
+	"background_color": "#ffffff",
+	"theme_color": "#ffffff",
+	"icons": [
+		{
+			"src": "/favicon.png",
+			"sizes": "192x192",
+			"type": "image/png"
+		}
+	]
+}

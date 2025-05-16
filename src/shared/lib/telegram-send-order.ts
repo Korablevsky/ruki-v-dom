@@ -27,8 +27,8 @@ export async function sendOrderDataToTelegram(
 		const botToken = process.env.TELEGRAM_BOT_ORDER_TOKEN
 		const chatId = process.env.TELEGRAM_CHAT_ID
 
-		console.log('botToken', botToken ? 'Определен' : 'Не определен')
-		console.log('chatId', chatId ? 'Определен' : 'Не определен')
+		// console.log('botToken', botToken ? 'Определен' : 'Не определен')
+		// console.log('chatId', chatId ? 'Определен' : 'Не определен')
 
 		if (!botToken || !chatId) {
 			console.error('Отсутствуют переменные окружения для Telegram')
@@ -52,7 +52,7 @@ export async function sendOrderDataToTelegram(
 		// Используем Telegram Bot API для отправки текстового сообщения
 		try {
 			// Отправляем текстовое сообщение
-			console.log('Отправка текстового сообщения в Telegram...')
+			// console.log('Отправка текстового сообщения в Telegram...')
 			const textResponse = await fetch(
 				`https://api.telegram.org/bot${botToken}/sendMessage`,
 				{
@@ -82,28 +82,28 @@ export async function sendOrderDataToTelegram(
 				return false
 			}
 
-			console.log('Текстовое сообщение успешно отправлено')
+			// console.log('Текстовое сообщение успешно отправлено')
 
 			// Если есть фотографии, отправляем их как документы
 			if (data.photos && data.photos.length > 0) {
 				// Обрабатываем не более 3 фотографий для снижения нагрузки
 				const limitedPhotos = data.photos.slice(0, 3)
 
-				console.log(
-					`Количество фотографий для отправки: ${limitedPhotos.length}`
-				)
+				// console.log(
+				// 	`Количество фотографий для отправки: ${limitedPhotos.length}`
+				// )
 
 				// Подготавливаем функции для отправки каждой фотографии
 				const sendPhotoPromises = limitedPhotos.map(async (photo, index) => {
 					try {
-						console.log(
-							`Подготовка фото ${index + 1}/${limitedPhotos.length}:`,
-							{
-								name: photo.name,
-								type: photo.type,
-								size: `${(photo.size / 1024).toFixed(2)} KB`,
-							}
-						)
+						// console.log(
+						// 	`Подготовка фото ${index + 1}/${limitedPhotos.length}:`,
+						// 	{
+						// 		name: photo.name,
+						// 		type: photo.type,
+						// 		size: `${(photo.size / 1024).toFixed(2)} KB`,
+						// 	}
+						// )
 
 						// Проверяем размер файла
 						if (photo.size > MAX_FILE_SIZE) {
@@ -135,9 +135,9 @@ export async function sendOrderDataToTelegram(
 						)
 
 						const arrayBuffer = await arrayBufferPromise
-						console.log(
-							`Файл ${photo.name} преобразован в ArrayBuffer, размер: ${arrayBuffer.byteLength} байт`
-						)
+						// console.log(
+						// 	`Файл ${photo.name} преобразован в ArrayBuffer, размер: ${arrayBuffer.byteLength} байт`
+						// )
 
 						// Создаем FormData для отправки файла как документа
 						const formData = new FormData()
@@ -147,9 +147,9 @@ export async function sendOrderDataToTelegram(
 						// Добавляем файл как документ
 						formData.append('document', new Blob([arrayBuffer]), photo.name)
 
-						console.log(
-							`Отправка файла ${photo.name} как документа в Telegram...`
-						)
+						// console.log(
+						// 	`Отправка файла ${photo.name} как документа в Telegram...`
+						// )
 
 						// Отправляем как документ с таймаутом
 						const controller = new AbortController()
@@ -181,9 +181,9 @@ export async function sendOrderDataToTelegram(
 									details: responseText,
 								}
 							} else {
-								console.log(
-									`Файл ${photo.name} успешно отправлен в Telegram как документ`
-								)
+									// console.log(
+									// 	`Файл ${photo.name} успешно отправлен в Telegram как документ`
+									// )
 								return { success: true }
 							}
 						} catch (fetchError: unknown) {
@@ -211,14 +211,14 @@ export async function sendOrderDataToTelegram(
 				})
 
 				// Отправляем все фотографии параллельно
-				console.log('Начинаем параллельную отправку фотографий...')
+				// console.log('Начинаем параллельную отправку фотографий...')
 				const results = await Promise.all(sendPhotoPromises)
 
 				// Анализируем результаты
 				const successCount = results.filter(r => r.success).length
-				console.log(
-					`Отправка фотографий завершена. Успешно: ${successCount}/${limitedPhotos.length}`
-				)
+				// console.log(
+				// 	`Отправка фотографий завершена. Успешно: ${successCount}/${limitedPhotos.length}`
+				// )
 
 				// Если хотя бы одна фотография отправлена успешно, считаем задачу выполненной
 				if (successCount === 0 && limitedPhotos.length > 0) {
