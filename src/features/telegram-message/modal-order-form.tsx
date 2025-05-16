@@ -175,6 +175,9 @@ export function ModalOrderForm() {
 		// Проверка номера телефона перед отправкой
 		if (!phoneValue || phoneValue.length < 18) {
 			setPhoneError('Введите полный номер телефона')
+			toast.error('Ошибка валидации', {
+				description: 'Введите полный номер телефона',
+			})
 			return
 		}
 
@@ -182,6 +185,10 @@ export function ModalOrderForm() {
 			setPhoneError(
 				'Введите корректный номер телефона в формате +7 (XXX) XXX-XX-XX'
 			)
+			toast.error('Ошибка валидации', {
+				description:
+					'Введите корректный номер телефона в формате +7 (XXX) XXX-XX-XX',
+			})
 			return
 		}
 
@@ -218,8 +225,10 @@ export function ModalOrderForm() {
 			}
 		} catch (error) {
 			console.error('Ошибка при отправке формы:', error)
+			const errorMessage =
+				error instanceof Error ? error.message : 'Произошла неизвестная ошибка'
 			toast.error('Ошибка', {
-				description: 'Произошла ошибка при отправке заявки',
+				description: `Произошла ошибка при отправке заявки: ${errorMessage}`,
 			})
 		} finally {
 			setIsSubmitting(false)
@@ -336,7 +345,19 @@ export function ModalOrderForm() {
 										id='photos'
 										accept='.jpg,.jpeg,.png,.webp'
 										className='hidden'
-										onChange={handlePhotoChange}
+										onChange={e => {
+											try {
+												handlePhotoChange(e)
+											} catch (error) {
+												const errorMessage =
+													error instanceof Error
+														? error.message
+														: 'Неизвестная ошибка при загрузке файла'
+												toast.error('Ошибка загрузки файла', {
+													description: errorMessage,
+												})
+											}
+										}}
 										ref={fileInputRef}
 									/>
 									{photosPreviews.length === 0 && (
@@ -412,6 +433,21 @@ export function ModalOrderForm() {
 								className='w-full hover:text-indigo-600 md:bg-white text-white  bg-indigo-600 border border-indigo-600 md:text-indigo-600 md:hover:bg-indigo-600 md:hover:text-white transition-all duration-300 text-lg font-semibold py-6 rounded-xl shadow-lg hover:shadow-xl cursor-pointer'
 								disabled={isSubmitting}
 								type='submit'
+								onClick={() => {
+									const formErrors = form.formState.errors
+									if (Object.keys(formErrors).length > 0) {
+										// Показываем первую ошибку валидации в тостере
+										const firstErrorField = Object.keys(formErrors)[0]
+										const firstError =
+											formErrors[firstErrorField as keyof typeof formErrors]
+												?.message
+										if (firstError && typeof firstError === 'string') {
+											toast.error('Ошибка валидации', {
+												description: firstError,
+											})
+										}
+									}
+								}}
 							>
 								{isSubmitting ? 'Отправка...' : 'Отправить заявку'}
 							</Button>
