@@ -3,6 +3,8 @@
  * Сервис для отправки данных в Телеграм
  */
 
+import sharp from 'sharp'
+
 interface OrderFormData {
 	lastName: string
 	firstName: string
@@ -11,6 +13,23 @@ interface OrderFormData {
 	phone: string
 	problem: string
 	photos?: File[]
+}
+
+/**
+ * Конвертирует изображение в формат JPEG
+ */
+async function convertImageToJpeg(arrayBuffer: ArrayBuffer): Promise<Buffer> {
+	try {
+		// Используем sharp для конвертации изображения в JPEG
+		const buffer = Buffer.from(arrayBuffer)
+		const jpegBuffer = await sharp(buffer).jpeg({ quality: 85 }).toBuffer()
+
+		return jpegBuffer
+	} catch (error) {
+		console.error('Ошибка при конвертации изображения:', error)
+		// Если конвертация не удалась, возвращаем исходный буфер
+		return Buffer.from(arrayBuffer)
+	}
 }
 
 /**
@@ -99,9 +118,35 @@ export async function sendOrderDataToTelegram(
 						formData.append('chat_id', chatId)
 						formData.append('caption', `Фото: ${photo.name}`)
 
-						// Создаем Blob из ArrayBuffer с типом файла
-						const blob = new Blob([arrayBuffer], { type: photo.type })
-						formData.append('photo', blob, photo.name)
+						// Проверяем формат файла
+						const isHeifFormat =
+							photo.type === 'image/heif' ||
+							photo.type === 'image/heic' ||
+							photo.name.toLowerCase().endsWith('.heic') ||
+							photo.name.toLowerCase().endsWith('.heif')
+
+						let fileData
+						let fileName = photo.name
+
+						if (isHeifFormat) {
+							// Конвертируем HEIF/HEIC в JPEG
+							console.log('Конвертация HEIF/HEIC в JPEG:', photo.name)
+							fileData = await convertImageToJpeg(arrayBuffer)
+							fileName = `${photo.name.split('.')[0]}.jpg`
+							formData.append(
+								'photo',
+								new Blob([fileData], { type: 'image/jpeg' }),
+								fileName
+							)
+						} else {
+							// Используем исходный формат
+							fileData = arrayBuffer
+							formData.append(
+								'photo',
+								new Blob([fileData], { type: photo.type }),
+								fileName
+							)
+						}
 
 						// Отправляем фото
 						const photoResponse = await fetch(
