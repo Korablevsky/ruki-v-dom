@@ -29,12 +29,15 @@ import { Input } from '@/shared/ui/input'
 import { Textarea } from '@/shared/ui/textarea'
 import Image from 'next/image'
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
+const MAX_FILE_SIZE = 10 * 1024 * 1024 // 5MB
 const ACCEPTED_IMAGE_TYPES = [
 	'image/jpeg',
 	'image/jpg',
 	'image/png',
 	'image/webp',
+	'image/gif',
+	'image/heic',
+	'image/heif',
 ]
 
 const PhotoSchema = z
@@ -45,7 +48,7 @@ const PhotoSchema = z
 	)
 	.refine(
 		file => file instanceof File && ACCEPTED_IMAGE_TYPES.includes(file.type),
-		'Только .jpg, .jpeg, .png и .webp форматы'
+		'Только .jpg, .jpeg, .png, .webp, .gif, .heic и .heif форматы'
 	)
 
 const formSchema = z.object({

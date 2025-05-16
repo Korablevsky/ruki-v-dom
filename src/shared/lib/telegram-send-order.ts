@@ -88,8 +88,8 @@ export async function sendOrderDataToTelegram(
 						const arrayBuffer = await photo.arrayBuffer()
 
 						// Проверяем размер файла и при необходимости уменьшаем его
-						if (arrayBuffer.byteLength > 5000000) {
-							// Предел ~5MB
+						if (arrayBuffer.byteLength > 10000000) {
+							// Предел ~10MB
 							console.warn('Файл слишком большой, пропускаем:', photo.name)
 							continue
 						}
