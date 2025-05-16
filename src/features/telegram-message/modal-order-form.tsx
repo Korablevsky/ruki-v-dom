@@ -101,7 +101,7 @@ export function ModalOrderForm() {
 		},
 	})
 
-	const handlePhotoChange = (e: ChangeEvent<HTMLInputElement>) => {
+	const handlePhotoChange = async (e: ChangeEvent<HTMLInputElement>) => {
 		if (!e.target.files || e.target.files.length === 0) return
 
 		// Очищаем существующие фото перед добавлением нового
@@ -125,10 +125,69 @@ export function ModalOrderForm() {
 			ACCEPTED_IMAGE_TYPES.includes(newFile.type)
 		) {
 			try {
-				const filePreview = URL.createObjectURL(newFile)
-				setPhotos([newFile])
+				// Проверяем, является ли файл HEIC/HEIF
+				const isHeicFormat =
+					newFile.type === 'image/heic' ||
+					newFile.type === 'image/heif' ||
+					newFile.name.toLowerCase().endsWith('.heic') ||
+					newFile.name.toLowerCase().endsWith('.heif')
+
+				let fileForPreview = newFile
+				let fileForUpload = newFile
+
+				// Если это HEIC/HEIF, конвертируем его в JPEG
+				if (isHeicFormat) {
+					toast.info('Обработка HEIC/HEIF изображения...', {
+						description: 'Пожалуйста, подождите, идет конвертация',
+					})
+
+					try {
+						// Конвертируем HEIC в Blob (JPEG)
+						const heic2any = (await import('heic2any')).default
+						const result = await heic2any({
+							blob: newFile,
+							toType: 'image/jpeg',
+							quality: 0.8,
+						})
+
+						// heic2any может вернуть как один Blob, так и массив Blob
+						const jpegBlob = Array.isArray(result) ? result[0] : result
+
+						// Создаем File из Blob для превью и отправки
+						const jpegFile = new File(
+							[jpegBlob],
+							newFile.name.replace(/\.(heic|heif)$/i, '.jpg'),
+							{
+								type: 'image/jpeg',
+								lastModified: new Date().getTime(),
+							}
+						)
+
+						// Используем конвертированный файл и для превью, и для отправки
+						fileForPreview = jpegFile
+						fileForUpload = jpegFile
+
+						toast.success('Изображение успешно конвертировано')
+					} catch (convError) {
+						console.error('Ошибка при конвертации HEIC/HEIF:', convError)
+						toast.error('Не удалось конвертировать HEIC/HEIF изображение', {
+							description:
+								'Пожалуйста, используйте другой формат изображения (JPG, PNG)',
+						})
+
+						// В случае ошибки конвертации прерываем загрузку
+						if (fileInputRef.current) {
+							fileInputRef.current.value = ''
+						}
+						return
+					}
+				}
+
+				// Создаем превью для файла
+				const filePreview = URL.createObjectURL(fileForPreview)
+				setPhotos([fileForUpload])
 				setPhotosPreviews([filePreview])
-				form.setValue('photos', [newFile])
+				form.setValue('photos', [fileForUpload])
 
 				// Для мобильных устройств показываем дополнительную информацию
 				if (isMobile) {
@@ -146,7 +205,7 @@ export function ModalOrderForm() {
 		} else {
 			toast.error('Файл не загружен', {
 				description:
-					'Проверьте размер (макс. 5MB) и формат файла (.jpg, .png, .webp)',
+					'Проверьте размер (макс. 5MB) и формат файла (.jpg, .png, .webp, .heic, .heif)',
 			})
 		}
 
@@ -251,9 +310,17 @@ export function ModalOrderForm() {
 			const timeoutPromise = new Promise<boolean>((_, reject) =>
 				setTimeout(
 					() => reject(new Error('Превышено время ожидания ответа')),
-					25000
+					60000 // Увеличиваем таймаут до 60 секунд
 				)
 			)
+
+			// Показываем индикатор загрузки
+			if (photos.length > 0) {
+				toast.info('Отправка формы с фотографией...', {
+					description: 'Это может занять до минуты, пожалуйста, подождите',
+					duration: 3000,
+				})
+			}
 
 			const success = await Promise.race([
 				sendOrderDataToTelegram(dataToSend),
@@ -418,11 +485,11 @@ export function ModalOrderForm() {
 									<Input
 										type='file'
 										id='photos'
-										accept='.jpg,.jpeg,.png,.webp'
+										accept='.jpg,.jpeg,.png,.webp,.heic,.heif'
 										className='hidden'
-										onChange={e => {
+										onChange={async e => {
 											try {
-												handlePhotoChange(e)
+												await handlePhotoChange(e)
 											} catch (error) {
 												const errorMessage =
 													error instanceof Error

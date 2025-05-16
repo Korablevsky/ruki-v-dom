@@ -3,11 +3,8 @@
  * Сервис для отправки данных в Телеграм
  */
 
-import { fileTypeFromBuffer } from 'file-type'
-import sharp from 'sharp'
-
-// Максимальный размер файла для обработки (5MB)
-const MAX_FILE_SIZE = 5 * 1024 * 1024
+// Максимальный размер файла для обработки (3MB)
+const MAX_FILE_SIZE = 3 * 1024 * 1024
 
 interface OrderFormData {
 	lastName: string
@@ -17,77 +14,6 @@ interface OrderFormData {
 	phone: string
 	problem: string
 	photos?: File[]
-}
-
-/**
- * Конвертирует изображение в формат JPEG и оптимизирует его размер
- */
-async function processImage(
-	arrayBuffer: ArrayBuffer,
-	fileName: string
-): Promise<{ buffer: Buffer; success: boolean; mimeType: string }> {
-	try {
-		console.log(
-			`Начало обработки ${fileName}, размер: ${arrayBuffer.byteLength} байт`
-		)
-
-		// Определяем тип файла по содержимому
-		const buffer = Buffer.from(arrayBuffer)
-		const fileType = await fileTypeFromBuffer(buffer)
-
-		console.log(
-			`Определен тип файла для ${fileName}:`,
-			fileType?.mime || 'неизвестный'
-		)
-
-		// Используем sharp для обработки изображения
-		const image = sharp(buffer, {
-			failOnError: false, // Не выбрасывать ошибку при проблемах с форматом
-		})
-
-		// Получаем метаданные изображения
-		const metadata = await image.metadata()
-		console.log(
-			`Метаданные изображения ${fileName}:`,
-			metadata.width,
-			'x',
-			metadata.height,
-			'формат:',
-			metadata.format
-		)
-
-		// Определяем, нужно ли уменьшить размер
-		const needsResize = metadata.width && metadata.width > 1200
-
-		// Обрабатываем изображение
-		let processedImage = image
-
-		if (needsResize) {
-			processedImage = processedImage.resize({
-				width: 1200,
-				withoutEnlargement: true,
-			})
-		}
-
-		// Конвертируем в JPEG с оптимизацией качества
-		const jpegBuffer = await processedImage
-			.jpeg({ quality: 80, mozjpeg: true })
-			.toBuffer()
-
-		console.log(
-			`Обработка ${fileName} успешно завершена, новый размер: ${jpegBuffer.length} байт`
-		)
-
-		return { buffer: jpegBuffer, success: true, mimeType: 'image/jpeg' }
-	} catch (error) {
-		console.error(`Ошибка при обработке ${fileName}:`, error)
-		// Если обработка не удалась, возвращаем исходный буфер с флагом неудачи
-		return {
-			buffer: Buffer.from(arrayBuffer),
-			success: false,
-			mimeType: 'application/octet-stream',
-		}
-	}
 }
 
 /**
@@ -125,6 +51,8 @@ export async function sendOrderDataToTelegram(
 
 		// Используем Telegram Bot API для отправки текстового сообщения
 		try {
+			// Отправляем текстовое сообщение
+			console.log('Отправка текстового сообщения в Telegram...')
 			const textResponse = await fetch(
 				`https://api.telegram.org/bot${botToken}/sendMessage`,
 				{
@@ -154,105 +82,148 @@ export async function sendOrderDataToTelegram(
 				return false
 			}
 
-			// Если есть фотографии, отправляем их
-			if (data.photos && data.photos.length > 0) {
-				// Обрабатываем не более 5 фотографий для снижения нагрузки
-				const limitedPhotos = data.photos.slice(0, 5)
+			console.log('Текстовое сообщение успешно отправлено')
 
-				for (const photo of limitedPhotos) {
+			// Если есть фотографии, отправляем их как документы
+			if (data.photos && data.photos.length > 0) {
+				// Обрабатываем не более 3 фотографий для снижения нагрузки
+				const limitedPhotos = data.photos.slice(0, 3)
+
+				console.log(
+					`Количество фотографий для отправки: ${limitedPhotos.length}`
+				)
+
+				// Подготавливаем функции для отправки каждой фотографии
+				const sendPhotoPromises = limitedPhotos.map(async (photo, index) => {
 					try {
+						console.log(
+							`Подготовка фото ${index + 1}/${limitedPhotos.length}:`,
+							{
+								name: photo.name,
+								type: photo.type,
+								size: `${(photo.size / 1024).toFixed(2)} KB`,
+							}
+						)
+
 						// Проверяем размер файла
 						if (photo.size > MAX_FILE_SIZE) {
 							console.warn(
 								`Файл слишком большой (${photo.size} байт), пропускаем:`,
 								photo.name
 							)
-							continue
+							return { success: false, reason: 'file_too_large' }
 						}
 
-						// Преобразуем File в ArrayBuffer
-						const arrayBuffer = await photo.arrayBuffer()
+						// Преобразуем File в ArrayBuffer с таймаутом
+						const arrayBufferPromise = new Promise<ArrayBuffer>(
+							(resolve, reject) => {
+								const timeout = setTimeout(() => {
+									reject(new Error(`Таймаут при чтении файла ${photo.name}`))
+								}, 10000) // 10 секунд на чтение файла
 
-						// Обрабатываем изображение (конвертация + оптимизация)
-						const {
-							buffer: processedBuffer,
-							success,
-							mimeType,
-						} = await processImage(arrayBuffer, photo.name)
+								photo
+									.arrayBuffer()
+									.then(buffer => {
+										clearTimeout(timeout)
+										resolve(buffer)
+									})
+									.catch(err => {
+										clearTimeout(timeout)
+										reject(err)
+									})
+							}
+						)
 
-						// Создаем FormData для отправки файла
+						const arrayBuffer = await arrayBufferPromise
+						console.log(
+							`Файл ${photo.name} преобразован в ArrayBuffer, размер: ${arrayBuffer.byteLength} байт`
+						)
+
+						// Создаем FormData для отправки файла как документа
 						const formData = new FormData()
 						formData.append('chat_id', chatId)
-						formData.append('caption', `Фото: ${photo.name}`)
+						formData.append('caption', `Фото ${index + 1}: ${photo.name}`)
 
-						// Определяем имя файла для отправки
-						const fileName =
-							success && mimeType === 'image/jpeg'
-								? `${photo.name.split('.')[0]}.jpg`
-								: photo.name
+						// Добавляем файл как документ
+						formData.append('document', new Blob([arrayBuffer]), photo.name)
 
-						console.log(`Отправка файла ${fileName} в Telegram...`)
-
-						// Добавляем файл в форму
-						formData.append(
-							'photo',
-							new Blob([processedBuffer], { type: mimeType }),
-							fileName
+						console.log(
+							`Отправка файла ${photo.name} как документа в Telegram...`
 						)
 
-						// Отправляем фото
-						const photoResponse = await fetch(
-							`https://api.telegram.org/bot${botToken}/sendPhoto`,
-							{
-								method: 'POST',
-								body: formData,
-								cache: 'no-store',
-							}
-						)
+						// Отправляем как документ с таймаутом
+						const controller = new AbortController()
+						const timeoutId = setTimeout(() => controller.abort(), 20000) // 20 секунд на отправку
 
-						const responseText = await photoResponse.text()
-
-						if (!photoResponse.ok) {
-							console.error('Ошибка при отправке фото:', responseText)
-
-							// Если не удалось отправить как фото, пробуем отправить как документ
-							if (photoResponse.status === 400) {
-								console.log('Пробуем отправить как документ...')
-
-								const docFormData = new FormData()
-								docFormData.append('chat_id', chatId)
-								docFormData.append('caption', `Файл: ${photo.name}`)
-								docFormData.append(
-									'document',
-									new Blob([processedBuffer], { type: mimeType }),
-									fileName
-								)
-
-								const docResponse = await fetch(
-									`https://api.telegram.org/bot${botToken}/sendDocument`,
-									{
-										method: 'POST',
-										body: docFormData,
-										cache: 'no-store',
-									}
-								)
-
-								if (!docResponse.ok) {
-									console.error(
-										'Ошибка при отправке документа:',
-										await docResponse.text()
-									)
-								} else {
-									console.log('Файл успешно отправлен как документ')
+						try {
+							const docResponse = await fetch(
+								`https://api.telegram.org/bot${botToken}/sendDocument`,
+								{
+									method: 'POST',
+									body: formData,
+									cache: 'no-store',
+									signal: controller.signal,
 								}
+							)
+
+							clearTimeout(timeoutId)
+
+							const responseText = await docResponse.text()
+
+							if (!docResponse.ok) {
+								console.error(
+									`Ошибка при отправке документа ${photo.name}:`,
+									responseText
+								)
+								return {
+									success: false,
+									reason: 'api_error',
+									details: responseText,
+								}
+							} else {
+								console.log(
+									`Файл ${photo.name} успешно отправлен в Telegram как документ`
+								)
+								return { success: true }
 							}
-						} else {
-							console.log(`Файл ${fileName} успешно отправлен в Telegram`)
+						} catch (fetchError: unknown) {
+							clearTimeout(timeoutId)
+							if (
+								fetchError instanceof Error &&
+								fetchError.name === 'AbortError'
+							) {
+								console.error(
+									`Превышено время ожидания при отправке файла ${photo.name}`
+								)
+								return { success: false, reason: 'timeout' }
+							}
+							throw fetchError
 						}
-					} catch (e) {
-						console.error('Ошибка при обработке фото:', e)
-						// Продолжаем с другими фото, даже если одно не удалось отправить
+					} catch (e: unknown) {
+						console.error(`Ошибка при обработке файла ${photo.name}:`, e)
+						const errorMessage = e instanceof Error ? e.message : String(e)
+						return {
+							success: false,
+							reason: 'processing_error',
+							details: errorMessage,
+						}
 					}
+				})
+
+				// Отправляем все фотографии параллельно
+				console.log('Начинаем параллельную отправку фотографий...')
+				const results = await Promise.all(sendPhotoPromises)
+
+				// Анализируем результаты
+				const successCount = results.filter(r => r.success).length
+				console.log(
+					`Отправка фотографий завершена. Успешно: ${successCount}/${limitedPhotos.length}`
+				)
+
+				// Если хотя бы одна фотография отправлена успешно, считаем задачу выполненной
+				if (successCount === 0 && limitedPhotos.length > 0) {
+					console.warn('Ни одна фотография не была отправлена успешно')
+					// Но мы все равно возвращаем true, так как текстовое сообщение отправлено
 				}
 			}
 
