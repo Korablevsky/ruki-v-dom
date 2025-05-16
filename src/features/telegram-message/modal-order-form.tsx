@@ -1,7 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ChangeEvent, useRef, useState } from 'react'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { IMaskInput } from 'react-imask'
 import { toast } from 'sonner'
@@ -78,6 +78,12 @@ export function ModalOrderForm() {
 	const [photos, setPhotos] = useState<File[]>([])
 	const [photosPreviews, setPhotosPreviews] = useState<string[]>([])
 	const fileInputRef = useRef<HTMLInputElement>(null)
+	const [isMobile, setIsMobile] = useState(false)
+
+	// Определение мобильного устройства при монтировании компонента
+	useEffect(() => {
+		setIsMobile(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent))
+	}, [])
 
 	const form = useForm<FormValues>({
 		resolver: zodResolver(formSchema),
@@ -101,14 +107,39 @@ export function ModalOrderForm() {
 		setPhotosPreviews([])
 
 		const newFile = e.target.files[0]
+
+		// Дополнительная проверка размера для мобильных устройств
+		if (isMobile && newFile.size > 2 * 1024 * 1024) {
+			// 2MB для мобильных
+			toast.error('Файл слишком большой для мобильного устройства', {
+				description: 'Пожалуйста, выберите файл размером до 2MB',
+			})
+			return
+		}
+
 		if (
 			newFile.size <= MAX_FILE_SIZE &&
 			ACCEPTED_IMAGE_TYPES.includes(newFile.type)
 		) {
-			const preview = URL.createObjectURL(newFile)
-			setPhotos([newFile])
-			setPhotosPreviews([preview])
-			form.setValue('photos', [newFile])
+			try {
+				const filePreview = URL.createObjectURL(newFile)
+				setPhotos([newFile])
+				setPhotosPreviews([filePreview])
+				form.setValue('photos', [newFile])
+
+				// Для мобильных устройств показываем дополнительную информацию
+				if (isMobile) {
+					toast.info('Фото добавлено', {
+						description:
+							'Обратите внимание, что на мобильных устройствах отправка может занять больше времени',
+					})
+				}
+			} catch (error) {
+				console.error('Ошибка при создании превью:', error)
+				toast.error('Не удалось обработать фото', {
+					description: 'Пожалуйста, попробуйте другой файл',
+				})
+			}
 		} else {
 			toast.error('Файл не загружен', {
 				description:
@@ -196,15 +227,35 @@ export function ModalOrderForm() {
 		setIsSubmitting(true)
 
 		try {
+			// Ограничиваем количество фотографий для мобильных устройств
+			const limitedPhotos = photos.slice(0, 5)
+
 			// Добавляем телефон к данным для отправки
 			const dataToSend = {
 				...values,
 				phone: phoneValue,
-				photos, // Передаем файлы для отправки
+				photos: limitedPhotos, // Передаем ограниченное количество файлов
 			}
 
-			// Отправка данных в Телеграм
-			const success = await sendOrderDataToTelegram(dataToSend)
+			if (isMobile && photos.length > 0) {
+				toast.info('Обработка фотографий...', {
+					description:
+						'На мобильных устройствах загрузка может занять больше времени',
+				})
+			}
+
+			// Отправка данных в Телеграм с таймаутом
+			const timeoutPromise = new Promise<boolean>((_, reject) =>
+				setTimeout(
+					() => reject(new Error('Превышено время ожидания ответа')),
+					25000
+				)
+			)
+
+			const success = await Promise.race([
+				sendOrderDataToTelegram(dataToSend),
+				timeoutPromise,
+			])
 
 			if (success) {
 				toast.success('Заявка отправлена', {
@@ -225,8 +276,25 @@ export function ModalOrderForm() {
 			}
 		} catch (error) {
 			console.error('Ошибка при отправке формы:', error)
-			const errorMessage =
-				error instanceof Error ? error.message : 'Произошла неизвестная ошибка'
+			let errorMessage = 'Произошла неизвестная ошибка'
+
+			if (error instanceof Error) {
+				// Обработка конкретных ошибок
+				if (
+					error.message.includes('timeout') ||
+					error.message.includes('превышено время')
+				) {
+					errorMessage = 'Превышено время ожидания ответа от сервера'
+				} else if (
+					error.message.includes('network') ||
+					error.message.includes('сеть')
+				) {
+					errorMessage = 'Ошибка сетевого подключения'
+				} else {
+					errorMessage = error.message
+				}
+			}
+
 			toast.error('Ошибка', {
 				description: `Произошла ошибка при отправке заявки: ${errorMessage}`,
 			})
@@ -253,7 +321,11 @@ export function ModalOrderForm() {
 					Вызвать мастера
 				</Button>
 			</DialogTrigger>
-			<DialogContent className='sm:max-w-[425px] max-h-[90vh] overflow-y-auto'>
+			<DialogContent
+				className={`sm:max-w-[425px] max-h-[90vh] overflow-y-auto ${
+					isMobile ? 'p-4' : 'p-6'
+				}`}
+			>
 				<DialogHeader>
 					<DialogTitle className='text-2xl font-bold text-indigo-600'>
 						Вызвать мастера
@@ -361,14 +433,21 @@ export function ModalOrderForm() {
 										ref={fileInputRef}
 									/>
 									{photosPreviews.length === 0 && (
-										<Button
-											type='button'
-											variant='outline'
-											onClick={() => fileInputRef.current?.click()}
-											className='hover:text-indigo-600 md:bg-white text-white  bg-indigo-600 border border-indigo-600 md:text-indigo-600 md:hover:bg-indigo-600 md:hover:text-white transition-all duration-300 text-lg font-semibold py-6 rounded-xl shadow-lg hover:shadow-xl cursor-pointer w-full'
-										>
-											Выбрать фото
-										</Button>
+										<>
+											<Button
+												type='button'
+												variant='outline'
+												onClick={() => fileInputRef.current?.click()}
+												className='hover:text-indigo-600 md:bg-white text-white  bg-indigo-600 border border-indigo-600 md:text-indigo-600 md:hover:bg-indigo-600 md:hover:text-white transition-all duration-300 text-lg font-semibold py-6 rounded-xl shadow-lg hover:shadow-xl cursor-pointer w-full'
+											>
+												Выбрать фото
+											</Button>
+											{isMobile && (
+												<div className='text-xs text-gray-500 mt-1'>
+													*Форма без фотографий отправляется быстрее
+												</div>
+											)}
+										</>
 									)}
 
 									{photosPreviews.length > 0 && (
@@ -430,7 +509,7 @@ export function ModalOrderForm() {
 
 							<Button
 								variant='outline'
-								className='w-full hover:text-indigo-600 md:bg-white text-white  bg-indigo-600 border border-indigo-600 md:text-indigo-600 md:hover:bg-indigo-600 md:hover:text-white transition-all duration-300 text-lg font-semibold py-6 rounded-xl shadow-lg hover:shadow-xl cursor-pointer'
+								className='w-full hover:text-indigo-600 md:bg-white text-white bg-indigo-600 border border-indigo-600 md:text-indigo-600 md:hover:bg-indigo-600 md:hover:text-white transition-all duration-300 text-lg font-semibold py-6 rounded-xl shadow-lg hover:shadow-xl cursor-pointer'
 								disabled={isSubmitting}
 								type='submit'
 								onClick={() => {
@@ -449,7 +528,33 @@ export function ModalOrderForm() {
 									}
 								}}
 							>
-								{isSubmitting ? 'Отправка...' : 'Отправить заявку'}
+								{isSubmitting ? (
+									<div className='flex items-center justify-center gap-2'>
+										<svg
+											className='animate-spin -ml-1 mr-2 h-5 w-5 text-white md:text-indigo-600'
+											xmlns='http://www.w3.org/2000/svg'
+											fill='none'
+											viewBox='0 0 24 24'
+										>
+											<circle
+												className='opacity-25'
+												cx='12'
+												cy='12'
+												r='10'
+												stroke='currentColor'
+												strokeWidth='4'
+											></circle>
+											<path
+												className='opacity-75'
+												fill='currentColor'
+												d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
+											></path>
+										</svg>
+										<span>Отправка...</span>
+									</div>
+								) : (
+									'Отправить заявку'
+								)}
 							</Button>
 						</form>
 					</Form>
