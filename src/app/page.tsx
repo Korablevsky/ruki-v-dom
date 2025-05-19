@@ -1,6 +1,8 @@
+import { DashboardOrder } from '@/widgets/dashboard-order/dashboard-order'
 import { Help } from '@/widgets/help/help'
 import { HomeScreen } from '@/widgets/home-screen/home-screen'
 import { HowWork } from '@/widgets/how-work/how-work'
+import { WelcomeWidget } from '@/widgets/welcome-widget/welcome-widget'
 import { WhyUs } from '@/widgets/why-us/why-us'
 import Script from 'next/script'
 export default function Home() {
@@ -132,12 +134,14 @@ export default function Home() {
 					}),
 				}}
 			/>
+			<WelcomeWidget />
 			<HomeScreen />
 			{/* <CarouselCustom /> */}
 	
 			<WhyUs />
 			<HowWork />
 			<Help />
+			<DashboardOrder />
 		</>
 	)
 }

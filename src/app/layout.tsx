@@ -21,65 +21,65 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
 	title: 'Муж на час, сантехник, сборка мебели – Руки в дом',
 	description:
-	  'Муж на час, сантехник, сборка мебели в Оренбурге. Быстро, качественно, недорого. Закажите услуги проверенных мастеров на Руки в дом!',
+		'Муж на час, сантехник, сборка мебели в Оренбурге. Быстро, качественно, недорого. Закажите услуги проверенных мастеров на Руки в дом!',
 	keywords:
-	  'муж на час, сантехник на дом, сборка мебели, ремонт мебели, бытовые услуги, мастер на час, услуги сантехника',
+		'муж на час, сантехник на дом, сборка мебели, ремонт мебели, бытовые услуги, мастер на час, услуги сантехника',
 	authors: [{ name: 'Руки в дом' }],
 	robots: 'index, follow',
 	viewport: 'width=device-width, initial-scale=1',
 	// alternates: {
-	//   canonical: 'https://rukivdom.ru',
+	// 	canonical: 'https://rukivdom.ru',
 	// },
 	icons: {
-	  icon: [
-		{ url: '/favicon.png', type: 'image/x-icon' },
-		{ url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-	  ],
-	  apple: [{ url: '/favicon.png', sizes: '180x180', type: 'image/png' }],
+		icon: [
+			{ url: '/favicon.png', type: 'image/x-icon' },
+			{ url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+		],
+		apple: [{ url: '/favicon.png', sizes: '180x180', type: 'image/png' }],
 	},
 	openGraph: {
-	  title: 'Муж на час, сантехник, сборка мебели – Руки в дом',
-	  description:
-		'Муж на час, сантехник, сборка мебели в Оренбурге. Быстро, качественно, недорого.',
-	  images: [
-		{
-		  url: '/og-image.jpg',
-		  width: 1200,
-		  height: 630,
-		  alt: 'Руки в дом - услуги сантехника и сборки мебели',
-		},
-	  ],
-	  type: 'website',
-	  url: 'https://rukivdom.ru',
-	  siteName: 'Руки в дом',
-	  locale: 'ru_RU',
+		title: 'Муж на час, сантехник, сборка мебели – Руки в дом',
+		description:
+			'Муж на час, сантехник, сборка мебели в Оренбурге. Быстро, качественно, недорого.',
+		images: [
+			{
+				url: '/favicon.png',
+				width: 1200,
+				height: 630,
+				alt: 'Руки в дом - услуги сантехника и сборки мебели',
+			},
+		],
+		type: 'website',
+		url: 'https://rukivdom.ru',
+		siteName: 'Руки в дом',
+		locale: 'ru_RU',
 	},
 	twitter: {
-	  card: 'summary_large_image',
-	  title: 'Муж на час, сантехник, сборка мебели – Руки в дом',
-	  description:
-		'Муж на час, сантехник, сборка мебели в Оренбурге. Быстро, качественно, недорого.',
-	  images: ['/og-image.jpg'],
-	  creator: '@RukiVDom',
+		card: 'summary_large_image',
+		title: 'Муж на час, сантехник, сборка мебели – Руки в дом',
+		description:
+			'Муж на час, сантехник, сборка мебели в Оренбурге. Быстро, качественно, недорого.',
+		images: ['/favicon.png'],
+		creator: '@RukiVDom',
 	},
 	other: {
-	  'script': JSON.stringify({
-		'@context': 'https://schema.org',
-		'@type': 'LocalBusiness',
-		name: 'Руки в дом',
-		description: 'Услуги муж на час, сантехник, сборка мебели в Оренбурге',
-		url: 'https://rukivdom.ru',
-		telephone: '+7-XXX-XXX-XXXX',
-		address: {
-		  '@type': 'PostalAddress',
-		  addressLocality: 'Оренбург',
-		  addressCountry: 'RU',
-		},
-		image: 'https://rukivdom.ru/og-image.jpg',
-		openingHours: 'Mo-Su 09:00-21:00',
-	  }),
+		script: JSON.stringify({
+			'@context': 'https://schema.org',
+			'@type': 'LocalBusiness',
+			name: 'Руки в дом',
+			description: 'Услуги муж на час, сантехник, сборка мебели в Оренбурге',
+			url: 'https://rukivdom.ru',
+			telephone: '+7-XXX-XXX-XXXX',
+			address: {
+				'@type': 'PostalAddress',
+				addressLocality: 'Оренбург',
+				addressCountry: 'RU',
+			},
+			image: 'https://rukivdom.ru/favicon.png',
+			openingHours: 'Mo-Su 09:00-21:00',
+		}),
 	},
-  };
+}
 
 export const viewport: Viewport = {
 	width: 'device-width',

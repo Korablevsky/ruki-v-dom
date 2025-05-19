@@ -62,6 +62,9 @@ export function HomeScreen() {
 
 	return (
 		<section className='container mx-auto py-8 pb-16 lg:pb-8'>
+			<h2 className='text-xl md:text-2xl lg:text-3xl text-indigo-700 font-bold text-center mb-4 md:mb-2 lg:mb-4'>
+				Наши услуги
+			</h2>
 			<div className='relative'>
 				<Carousel
 					opts={{

@@ -8,6 +8,7 @@ import { z } from 'zod'
 
 import { sendVacancyDataToTelegram } from '@/shared/lib/telegram-send-resume'
 import { Button } from '@/shared/ui/button'
+import { Checkbox } from '@/shared/ui/checkbox'
 import {
 	Form,
 	FormControl,
@@ -18,6 +19,7 @@ import {
 } from '@/shared/ui/form'
 import { Input } from '@/shared/ui/input'
 import { Textarea } from '@/shared/ui/textarea'
+import Link from 'next/link'
 import { IMaskInput } from 'react-imask'
 
 const formSchema = z.object({
@@ -36,6 +38,9 @@ const formSchema = z.object({
 	phone: z.string().refine(val => val.length === 0 || val.length >= 18, {
 		message: 'Введите корректный номер телефона',
 	}),
+	agreement: z.boolean().refine(val => val === true, {
+		message: 'Необходимо согласиться с условиями оферты',
+	}),
 })
 
 export function VacancyForm() {
@@ -51,6 +56,7 @@ export function VacancyForm() {
 			city: '',
 			skills: '',
 			phone: '',
+			agreement: false,
 		},
 	})
 
@@ -200,6 +206,43 @@ export function VacancyForm() {
 										{form.formState.errors.phone.message}
 									</FormMessage>
 								)}
+							</FormItem>
+						)}
+					/>
+
+					<FormField
+						control={form.control}
+						name='agreement'
+						render={({ field }) => (
+							<FormItem className='flex flex-row items-center space-x-3 space-y-0'>
+								<FormControl>
+									<Checkbox
+										checked={field.value}
+										onCheckedChange={field.onChange}
+										className='h-5 w-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600'
+									/>
+								</FormControl>
+								<div className='flex flex-wrap items-center gap-x-1 leading-normal'>
+											<FormLabel className='text-sm inline'>
+												Я согласен с{' '}
+												<Link
+													href='/documents/oferta_dlya_mastera.docx'
+													target='_blank'
+													rel='noopener noreferrer'
+													className='text-indigo-600 hover:text-indigo-500 underline inline'
+												>
+													условиями оферты
+												</Link>{' '}
+												и{' '}
+												<Link
+													href='/politika-konfidencialnosti'
+													className='text-indigo-600 hover:text-indigo-500 underline inline'
+												>
+													Политикой конфиденциальности
+												</Link>
+											</FormLabel>
+											<FormMessage />
+										</div>
 							</FormItem>
 						)}
 					/>
