@@ -1,3 +1,4 @@
+import { ModalOrderForm } from '@/features/telegram-message/modal-order-form'
 import { Button } from '@/shared/ui/button'
 import Image from 'next/image'
 
@@ -27,16 +28,13 @@ export function WelcomeWidget() {
 					<div className='flex flex-col sm:flex-row gap-4 max-w-xs sm:max-w-none mx-auto md:mx-0'>
 						<Button
 							variant='outline'
-							className='bg-transparent border-white text-white hover:bg-white hover:text-indigo-600 transition-all duration-300 text-lg font-semibold lg:py-6 py-4 rounded-md shadow-lg hover:shadow-xl cursor-pointer w-full sm:w-auto'
+							className='bg-transparent border-white text-white hover:bg-white hover:text-indigo-600 transition-all duration-300 text-lg font-semibold py-6  rounded-md shadow-lg hover:shadow-xl cursor-pointer w-full sm:w-auto'
 						>
 							Позвонить
 						</Button>
-						<Button
-							variant='outline'
-							className='bg-white text-indigo-600 hover:bg-indigo-600 hover:text-white transition-all duration-300 text-lg font-semibold lg:py-6 py-4 rounded-md shadow-lg hover:shadow-xl cursor-pointer w-full sm:w-auto'
-						>
-							Вызвать мастера
-						</Button>
+						<div className='w-full sm:w-auto'>
+							<ModalOrderForm />
+						</div>
 					</div>
 				</div>
 
