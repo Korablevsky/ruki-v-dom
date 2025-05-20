@@ -393,7 +393,7 @@ export function ModalOrderForm() {
 			<DialogTrigger asChild>
 				<Button
 					variant='outline'
-					className='w-full bg-white text-indigo-600 hover:bg-indigo-600 hover:text-white transition-all duration-300 text-lg font-semibold py-6 rounded-xl shadow-lg hover:shadow-xl cursor-pointer'
+					className='w-full bg-white text-indigo-600 hover:bg-indigo-600 hover:text-white transition-all duration-300 text-lg font-semibold py-6 rounded-md shadow-lg hover:shadow-xl cursor-pointer'
 				>
 					Вызвать мастера
 				</Button>

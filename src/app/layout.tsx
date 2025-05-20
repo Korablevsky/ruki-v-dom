@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 		'муж на час, сантехник на дом, сборка мебели, ремонт мебели, бытовые услуги, мастер на час, услуги сантехника',
 	authors: [{ name: 'Руки в дом' }],
 	robots: 'index, follow',
-	viewport: 'width=device-width, initial-scale=1',
+	metadataBase: new URL('https://rukivdom.ru'),
 	// alternates: {
 	// 	canonical: 'https://rukivdom.ru',
 	// },
