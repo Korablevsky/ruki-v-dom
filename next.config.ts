@@ -7,6 +7,9 @@ const nextConfig: NextConfig = {
 		},
 	},
 	output: 'standalone',
+	images: {
+		unoptimized: false, // Включить оптимизацию
+	},
 	/* config options here */
 	// experimental: {
 	// 	serverActions: {
