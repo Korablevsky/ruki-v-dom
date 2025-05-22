@@ -18,6 +18,8 @@ ARG TELEGRAM_CHAT_ID
 ENV TELEGRAM_BOT_RESUME_TOKEN=${TELEGRAM_BOT_RESUME_TOKEN}
 ENV TELEGRAM_BOT_ORDER_TOKEN=${TELEGRAM_BOT_ORDER_TOKEN}
 ENV TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
+# Оптимизация для production
+ENV NODE_ENV=production
 RUN npm run build
 
 # Финальный образ
@@ -39,9 +41,10 @@ RUN addgroup --system --gid 1001 nodejs && \
 
 WORKDIR /app
 
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
+# Копируем только необходимые файлы
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 USER nextjs
 
@@ -49,5 +52,5 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 
-# Убедимся, что сервер слушает на 0.0.0.0
+# Запуск приложения
 CMD ["node", "server.js"]
