@@ -17,6 +17,10 @@ TELEGRAM_CHAT_ID=your_chat_id_here
 ### Запуск с помощью docker-compose (рекомендуется)
 
 ```bash
+# Очистка предыдущей сборки (если нужно)
+docker-compose down
+docker system prune -f
+
 # Сборка и запуск контейнера
 docker-compose up -d --build
 
@@ -43,6 +47,46 @@ docker run -d -p 3000:3000 \
   -e TELEGRAM_BOT_ORDER_TOKEN=your_order_token_here \
   -e TELEGRAM_CHAT_ID=your_chat_id_here \
   --name ruki-v-dom ruki-v-dom
+```
+
+## Устранение неполадок
+
+### Контейнер постоянно перезапускается
+
+1. Проверьте логи контейнера:
+
+```bash
+docker logs ruki-v-dom
+```
+
+2. Запустите скрипт диагностики:
+
+```bash
+./docker-debug.sh
+```
+
+3. Попробуйте запустить контейнер в интерактивном режиме:
+
+```bash
+docker-compose run --rm app sh
+```
+
+4. Проверьте наличие файла server.js внутри контейнера:
+
+```bash
+docker run --rm ruki-v-dom ls -la
+```
+
+5. Проверьте сборку Next.js в интерактивном режиме:
+
+```bash
+# Войдите в контейнер builder
+docker build --target builder -t ruki-v-dom-builder .
+docker run -it --rm ruki-v-dom-builder sh
+
+# Внутри контейнера запустите
+ls -la .next
+cat .next/standalone/server.js
 ```
 
 ## Важные замечания
