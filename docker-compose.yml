@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.3'
 
 services:
   app:
@@ -7,25 +7,28 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        - TELEGRAM_BOT_RESUME_TOKEN=${TELEGRAM_BOT_RESUME_TOKEN}
-        - TELEGRAM_BOT_ORDER_TOKEN=${TELEGRAM_BOT_ORDER_TOKEN}
-        - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
-    restart: on-failure:3
+        - TELEGRAM_BOT_RESUME_TOKEN=${TELEGRAM_BOT_RESUME_TOKEN:-test_token}
+        - TELEGRAM_BOT_ORDER_TOKEN=${TELEGRAM_BOT_ORDER_TOKEN:-test_token}
+        - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID:-test_id}
+    # Устанавливаем no - никогда не перезапускать
+    restart: 'no'
     ports:
       - '3000:3000'
     environment:
       - NODE_ENV=production
-      - TELEGRAM_BOT_RESUME_TOKEN=${TELEGRAM_BOT_RESUME_TOKEN}
-      - TELEGRAM_BOT_ORDER_TOKEN=${TELEGRAM_BOT_ORDER_TOKEN}
-      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
+      - TELEGRAM_BOT_RESUME_TOKEN=${TELEGRAM_BOT_RESUME_TOKEN:-test_token}
+      - TELEGRAM_BOT_ORDER_TOKEN=${TELEGRAM_BOT_ORDER_TOKEN:-test_token}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID:-test_id}
       - NEXT_TELEMETRY_DISABLED=1
-      - DEBUG=next*
     # Добавляем возможность просмотра логов
     logging:
       driver: 'json-file'
       options:
         max-size: '10m'
         max-file: '3'
+    # Указываем, что контейнер должен быть всегда работоспособным
+    healthcheck:
+      disable: true
     # Если нужны тома для постоянного хранения
     # volumes:
     #   - ./data:/app/data
