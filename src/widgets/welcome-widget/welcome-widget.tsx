@@ -6,21 +6,22 @@ export function WelcomeWidget() {
 	return (
 		<section className='flex flex-col gap-6 py-10 h-[600px] md:h-auto md:py-16 -mx-4 bg-gradient-to-br from-indigo-700  to-purple-800 shadow-lg relative overflow-hidden'>
 			{/* Фоновое изображение, видимое только на маленьких экранах */}
-			<div className='absolute  inset-0 w-full h-full opacity-65 md:hidden'>
+			<div className='absolute  inset-0 w-full h-full opacity-85 md:hidden'>
 				<Image
 					src='/png/page-master/master-dashboard.webp'
 					alt='Мастер за работой'
 					className='w-full h-full object-center object-cover'
 					height={400}
 					width={400}
+					priority
 				/>
 			</div>
 
 			{/* Контент и изображение для планшетов и десктопов в flexbox-layout */}
 			<div className='max-w-7xl mt-auto mx-auto px-4 sm:px-6 w-full flex flex-col md:flex-row items-center'>
-				<div className='text-center md:text-left md:max-w-xl z-10 py-4 md:py-6 px-4 md:px-6 rounded-lg backdrop-blur-md bg-black/40 shadow-md'>
+				<div className='text-center md:text-left md:max-w-md lg:max-w-xl z-10 py-4 md:py-6 px-4 md:px-6 rounded-lg backdrop-blur-md bg-black/50 md:bg-black/30 shadow-md'>
 					<h2 className='text-2xl md:text-3xl lg:text-4xl text-white font-bold mb-4 md:mb-6'>
-						Профессиональные мастера для вашего дома
+						Профессиональные мастера для вашего дома в Оренбурге
 					</h2>
 					<p className='text-white/90 max-w-2xl mx-auto md:mx-0 leading-relaxed text-base md:text-lg mb-6'>
 						Быстрый выезд, прозрачные цены. Решим любые бытовые проблемы.

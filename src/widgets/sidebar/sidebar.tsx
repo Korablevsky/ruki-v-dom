@@ -14,9 +14,10 @@ import { useRouter } from 'next/navigation'
 
 interface SidebarProps {
 	onLinkClick?: () => void
+	pathname?: string
 }
 
-export function Sidebar({ onLinkClick }: SidebarProps) {
+export function Sidebar({ onLinkClick, pathname }: SidebarProps) {
 	const router = useRouter()
 
 	const handleNavigation = (href: string) => {
@@ -46,7 +47,7 @@ export function Sidebar({ onLinkClick }: SidebarProps) {
 			text: 'Сборщик мебели',
 		},
 		{
-			href: '/price',
+			href: '/prices',
 			icon: <RussianRuble />,
 			text: 'Цены',
 		},
@@ -76,6 +77,7 @@ export function Sidebar({ onLinkClick }: SidebarProps) {
 					icon={item.icon}
 					text={item.text}
 					handleNavigation={handleNavigation}
+					isActive={pathname === item.href}
 				/>
 			))}
 		</aside>

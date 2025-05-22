@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 export function Footer() {
 	return (
-		<footer className='bg-indigo-600 text-white mt-6 py-6 px-4'>
+		<footer className='bg-indigo-600 text-white py-6 px-4 mt-auto'>
 			<div className='container mx-auto max-w-7xl'>
 				<div className='flex flex-col md:flex-row justify-between items-center gap-4'>
 					<p className='text-center md:text-left'>

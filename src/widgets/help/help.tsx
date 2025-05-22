@@ -25,25 +25,7 @@ export function Help() {
 			question: 'Что делать, если я не знаю, какая именно услуга мне нужна?',
 			answer: (
 				<>
-					Позвоните или напишите нам в{' '}
-					<Link
-						href='https://t.me/your_telegram'
-						className='text-[#0088cc] font-medium underline hover:text-blue-600'
-						target='_blank'
-						rel='noopener noreferrer'
-					>
-						Telegram
-					</Link>{' '}
-					или{' '}
-					<Link
-						href='https://wa.me/your_whatsapp'
-						className='text-[#25D366] font-medium underline hover:text-green-600'
-						target='_blank'
-						rel='noopener noreferrer'
-					>
-						WhatsApp
-					</Link>{' '}
-					о своей проблеме и мы поможем вам определиться с выбором.
+					Позвоните или оставьте заявку на сайте с описанием вашей проблемы и мы поможем вам определиться с выбором.
 				</>
 			),
 		},
@@ -74,8 +56,8 @@ export function Help() {
 		},
 	]
 	return (
-		<section className='flex flex-col gap-4 '>
-			<h2 className='text-2xl text-indigo-700 font-bold text-center mb-2'>
+		<section className='flex flex-col gap-4 py-4 md:py-6 '>
+		<h2 className='text-xl md:text-2xl lg:text-3xl text-indigo-700 font-bold text-center mb-4 md:mb-2 lg:mb-6'>
 				Часто задаваемые вопросы
 			</h2>
 			<Accordion type='single' collapsible className='w-full space-y-2'>
@@ -95,6 +77,5 @@ export function Help() {
 				))}
 			</Accordion>
 		</section>
-		
 	)
 }

@@ -10,11 +10,13 @@ import {
 import { Menu, PhoneOutgoing } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { Sidebar } from '../sidebar/sidebar'
 
 export function Header() {
 	const [isOpen, setIsOpen] = useState(false)
+	const pathname = usePathname()
 
 	return (
 		<header className='sticky top-0 z-50 w-full bg-white border-b border-gray-100 shadow-sm'>
@@ -38,28 +40,44 @@ export function Header() {
 					{/* Десктопная навигация */}
 					<div className='hidden md:flex items-center space-x-6'>
 						<Link
-							href='/contacts'
-							className='relative text-gray-700 hover:text-indigo-600 font-medium transition-colors py-2 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-indigo-600 after:transition-all hover:after:w-full'
+							href='/services/master-na-chas'
+							className={`relative ${
+								pathname === '/services/master-na-chas'
+									? 'text-indigo-600 after:w-full'
+									: 'text-gray-700 hover:text-indigo-600 after:w-0 hover:after:w-full'
+							} font-medium transition-colors py-2 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-indigo-600 after:transition-all`}
 						>
 							Муж на час
 						</Link>
 						<Link
-							href='/contacts'
-							className='relative text-gray-700 hover:text-indigo-600 font-medium transition-colors py-2 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-indigo-600 after:transition-all hover:after:w-full'
+							href='/services/sanitehnik'
+							className={`relative ${
+								pathname === '/services/sanitehnik'
+									? 'text-indigo-600 after:w-full'
+									: 'text-gray-700 hover:text-indigo-600 after:w-0 hover:after:w-full'
+							} font-medium transition-colors py-2 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-indigo-600 after:transition-all`}
 						>
 							Сантехник
 						</Link>
 						<Link
-							href='/contacts'
-							className='relative text-gray-700 hover:text-indigo-600 font-medium transition-colors py-2 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-indigo-600 after:transition-all hover:after:w-full'
+							href='/services/sborka-mebeli'
+							className={`relative ${
+								pathname === '/services/sborka-mebeli'
+									? 'text-indigo-600 after:w-full'
+									: 'text-gray-700 hover:text-indigo-600 after:w-0 hover:after:w-full'
+							} font-medium transition-colors py-2 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-indigo-600 after:transition-all`}
 						>
 							Сборка мебели
 						</Link>
 						<Link
-							href='/contacts'
-							className='relative text-gray-700 hover:text-indigo-600 font-medium transition-colors py-2 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-indigo-600 after:transition-all hover:after:w-full'
+							href='/prices'
+							className={`relative ${
+								pathname === '/prices'
+									? 'text-indigo-600 after:w-full'
+									: 'text-gray-700 hover:text-indigo-600 after:w-0 hover:after:w-full'
+							} font-medium transition-colors py-2 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-indigo-600 after:transition-all`}
 						>
-							Контакты
+							Цены
 						</Link>
 					</div>
 
@@ -75,7 +93,10 @@ export function Header() {
 					{/* Мобильное меню */}
 					<Sheet open={isOpen} onOpenChange={setIsOpen}>
 						<SheetTrigger asChild>
-							<button className='p-1 cursor-pointer md:hidden' aria-label='Открыть меню'>
+							<button
+								className='p-1 cursor-pointer md:hidden'
+								aria-label='Открыть меню'
+							>
 								<Menu className='w-8 h-8 text-indigo-600 transition-colors' />
 							</button>
 						</SheetTrigger>

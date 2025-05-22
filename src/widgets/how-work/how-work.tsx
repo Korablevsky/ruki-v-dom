@@ -1,5 +1,4 @@
 import { StepCardCustom } from '@/entities/step-card-custom/step-card-custom'
-import Link from 'next/link'
 
 export function HowWork() {
 	return (
@@ -13,25 +12,7 @@ export function HowWork() {
 					title='Свяжитесь с нами'
 					description={
 						<>
-							Позвоните или напишите нам в{' '}
-							<Link
-								href='https://t.me/korablevsky'
-								className='text-[#0088cc] font-medium  underline hover:text-blue-600 '
-								target='_blank'
-								rel='noopener noreferrer'
-							>
-								Telegram
-							</Link>{' '}
-							или{' '}
-							<Link
-								href='https://wa.me/79534574099'
-								className='text-[#25D366] font-medium underline hover:text-green-600 '
-								target='_blank'
-								rel='noopener noreferrer'
-							>
-								WhatsApp
-							</Link>{' '}
-							о своей проблеме
+							Позвоните или оставьте заявку на сайте с описанием вашей проблемы
 						</>
 					}
 					number={1}

@@ -1,4 +1,3 @@
-import { PostHogProvider } from '@/shared/lib/ph-provider'
 import { Footer } from '@/widgets/footer/footer'
 import { Header } from '@/widgets/header/header'
 import type { Metadata, Viewport } from 'next'
@@ -103,25 +102,19 @@ export default function RootLayout({
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen bg-gradient-to-br from-indigo-200 via-white to-pink-100 `}
 			>
-				<PostHogProvider>
-					<Header />
-					<div className='flex'>
-						<main className='container mx-auto px-4 flex-grow flex-1 flex flex-col gap-8 '>
-							{children}
-						</main>
-					</div>
-					<Footer />
-					<Toaster
-						richColors
-						position='bottom-right'
-						className='hidden sm:block'
-					/>
-					<Toaster
-						richColors
-						position='top-center'
-						className='block sm:hidden'
-					/>
-				</PostHogProvider>
+				<Header />
+				<div className='flex flex-grow flex-1'>
+					<main className='container mx-auto px-4 w-full flex flex-col min-h-[calc(100vh-200px)] gap-8 pb-8'>
+						{children}
+					</main>
+				</div>
+				<Footer />
+				<Toaster
+					richColors
+					position='bottom-right'
+					className='hidden sm:block'
+				/>
+				<Toaster richColors position='top-center' className='block sm:hidden' />
 
 				{/* Структурированные данные для SEO */}
 				<Script

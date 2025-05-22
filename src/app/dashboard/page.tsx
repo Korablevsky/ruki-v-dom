@@ -1,6 +1,5 @@
 import { CardMaster } from '@/entities/card-master/card-master'
 import { SearchCheck, UserRoundPlus } from 'lucide-react'
-// import posthog from 'posthog-js'
 
 export default function DashboardPage() {
 	return (
@@ -50,8 +49,6 @@ export default function DashboardPage() {
 										Бесплатный поиск
 									</span>
 									<button className='bg-white text-indigo-600 font-medium py-2 px-6 rounded-full hover:bg-indigo-50 transition-colors duration-300 w-full sm:w-auto text-center'
-									onClick={()=>{posthog.capture('my event', { property: 'value' })
-								}}
 									>
 										Найти мастера
 									</button>
