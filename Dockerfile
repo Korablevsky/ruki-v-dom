@@ -15,8 +15,7 @@ RUN npm run build
 
 # Финальный образ
 FROM base AS runner
-ENV NODE_ENV production
-
+ENV NODE_ENV=production
 # Создаем непривилегированного пользователя
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs
@@ -30,7 +29,7 @@ COPY --from=builder /app/.next/static ./.next/static
 USER nextjs
 
 EXPOSE 3000
-ENV PORT 3000
-ENV HOSTNAME "0.0.0.0"
+ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
 
 CMD ["node", "server.js"]
