@@ -1,15 +1,15 @@
 
 services:
-  app:
+  nextjs:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: ruki-v-dom
+    restart: always
     ports:
       - '3000:3000'
-    restart: always
-    env_file:
-      - .env  # Подключение .env файла
     environment:
       - NODE_ENV=production
-      - NEXT_TELEMETRY_DISABLED=1
-  
+    # Если нужны переменные окружения, раскомментируйте и добавьте путь к файлу
+    # env_file:
+    #   - .env.production
