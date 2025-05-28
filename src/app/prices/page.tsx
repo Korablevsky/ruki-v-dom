@@ -97,7 +97,7 @@ export default function Price() {
 												</div>
 											</TableHead>
 											<TableHead className='last:rounded-tr-md bg-indigo-50'>
-												<div className='flex cursor-pointer items-center font-medium text-blue-800'>
+												<div className='flex cursor-pointer justify-center items-center font-medium w-[100px] text-blue-800'>
 													Цена
 												</div>
 											</TableHead>
@@ -133,7 +133,7 @@ export default function Price() {
 															: ''
 													}`}
 												>
-													{service.price}
+													от {service.price} ₽
 												</TableCell>
 											</TableRow>
 										))}
@@ -144,6 +144,11 @@ export default function Price() {
 					</AccordionItem>
 				))}
 			</Accordion>
+
+			<div className='text-sm text-gray-500 mt-2 '>
+				*Окончательная цена уточняется у мастера и она может отличаться от того
+				что на сайте в зависимости от сложности работы.
+			</div>
 		</main>
 	)
 }
