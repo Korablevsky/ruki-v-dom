@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 		'муж на час, сантехник на дом, сборка мебели, ремонт мебели, бытовые услуги, мастер на час, услуги сантехника',
 	authors: [{ name: 'Руки в дом' }],
 	robots: 'index, follow',
-	metadataBase: new URL('https://rukivdom.ru'),
+	metadataBase: new URL('https://rukiwdom.ru'),
 	// alternates: {
 	// 	canonical: 'https://rukivdom.ru',
 	// },
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
 			},
 		],
 		type: 'website',
-		url: 'https://rukivdom.ru',
+		url: 'https://rukiwdom.ru',
 		siteName: 'Руки в дом',
 		locale: 'ru_RU',
 	},
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
 		description:
 			'Муж на час, сантехник, сборка мебели в Оренбурге. Быстро, качественно, недорого.',
 		images: ['/favicon.png'],
-		creator: '@RukiVDom',
+		creator: '@RukiWDom',
 	},
 	other: {
 		script: JSON.stringify({
@@ -67,14 +67,14 @@ export const metadata: Metadata = {
 			'@type': 'LocalBusiness',
 			name: 'Руки в дом',
 			description: 'Услуги муж на час, сантехник, сборка мебели в Оренбурге',
-			url: 'https://rukivdom.ru',
-			telephone: '+7-XXX-XXX-XXXX',
+			url: 'https://rukiwdom.ru',
+			telephone: '+79534574099',
 			address: {
 				'@type': 'PostalAddress',
 				addressLocality: 'Оренбург',
 				addressCountry: 'RU',
 			},
-			image: 'https://rukivdom.ru/favicon.png',
+			image: 'https://rukiwdom.ru/favicon.png',
 			openingHours: 'Mo-Su 09:00-21:00',
 		}),
 	},
@@ -125,13 +125,13 @@ export default function RootLayout({
 							'@context': 'https://schema.org',
 							'@type': 'Organization',
 							name: 'Руки в дом',
-							url: 'https://rukivdom.ru',
-							logo: 'https://rukivdom.ru/favicon.png',
+							url: 'https://rukiwdom.ru',
+							logo: 'https://rukiwdom.ru/favicon.png',
 							description:
 								'Руки в дом – Помогает найти специалистов, которые сделают работу быстро и качественно',
 							contactPoint: {
 								'@type': 'ContactPoint',
-								telephone: '+7-XXX-XXX-XXXX',
+								telephone: '+79534574099',
 								contactType: 'customer service',
 							},
 						}),

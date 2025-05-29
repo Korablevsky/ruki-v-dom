@@ -3,69 +3,222 @@ import Link from 'next/link'
 import Script from 'next/script'
 
 export const metadata: Metadata = {
-	title: '11111',
+	title: 'Контакты - Руки в дом | Связаться с нами в Оренбурге',
 	description:
-		'Руки в дом – Помогает найти специалистов, которые сделают работу быстро и качественно',
+		'Свяжитесь с нами для заказа услуг домашнего мастера в Оренбурге. Телефон: +7 (953) 457-40-99, email: info.rukiwdom@yandex.ru. Быстрый отклик и качественная работа.',
+	keywords:
+		'контакты руки в дом, домашний мастер Оренбург, телефон мастера, заказать услуги мастера, ремонт дома Оренбург',
+	openGraph: {
+		title: 'Контакты - Руки в дом | Связаться с нами в Оренбурге',
+		description:
+			'Свяжитесь с нами для заказа услуг домашнего мастера в Оренбурге. Быстрый отклик и качественная работа.',
+		url: 'https://rukiwdom.ru/contacts',
+		siteName: 'Руки в дом',
+		locale: 'ru_RU',
+		type: 'website',
+	},
+	twitter: {
+		card: 'summary',
+		title: 'Контакты - Руки в дом | Связаться с нами в Оренбурге',
+		description:
+			'Свяжитесь с нами для заказа услуг домашнего мастера в Оренбурге.',
+	},
+	alternates: {
+		canonical: 'https://rukiwdom.ru/contacts',
+	},
+	robots: {
+		index: true,
+		follow: true,
+		googleBot: {
+			index: true,
+			follow: true,
+		},
+	},
 	icons: {
 		icon: '/favicon.png',
 	},
 }
 
 export default function ContactsPage() {
+	const organizationSchema = {
+		'@context': 'https://schema.org',
+		'@type': 'LocalBusiness',
+		name: 'Руки в дом',
+		description: 'Услуги домашнего мастера в Оренбурге',
+		url: 'https://rukiwdom.ru',
+		telephone: '+79534574099',
+		email: 'info.rukiwdom@yandex.ru',
+		address: {
+			'@type': 'PostalAddress',
+			streetAddress: 'ул. Новая, д. 4',
+			addressLocality: 'Оренбург',
+			addressRegion: 'Оренбургская область',
+			addressCountry: 'RU',
+		},
+		geo: {
+			'@type': 'GeoCoordinates',
+			latitude: '51.7727',
+			longitude: '55.0988',
+		},
+		openingHours: ['Mo-Fr 09:00-20:00', 'Sa-Su 10:00-18:00'],
+		priceRange: '$$',
+		areaServed: {
+			'@type': 'City',
+			name: 'Оренбург',
+		},
+		serviceArea: {
+			'@type': 'City',
+			name: 'Оренбург',
+		},
+		sameAs: [
+			'https://t.me/korablevsky',
+			'https://wa.me/79534574099',
+			'https://vk.com',
+		],
+	}
+
+	const contactPageSchema = {
+		'@context': 'https://schema.org',
+		'@type': 'ContactPage',
+		name: 'Контакты - Руки в дом',
+		description:
+			'Страница контактов компании Руки в дом - услуги домашнего мастера в Оренбурге',
+		url: 'https://rukiwdom.ru/contacts',
+		mainEntity: {
+			'@type': 'LocalBusiness',
+			name: 'Руки в дом',
+			telephone: '+79534574099',
+			email: 'info.rukiwdom@yandex.ru',
+		},
+	}
+
 	return (
-		<main className='  py-10 '>
+		<main className='py-10' itemScope itemType='https://schema.org/ContactPage'>
 			<Script
-				id='webpage-schema'
+				id='organization-schema'
 				type='application/ld+json'
 				dangerouslySetInnerHTML={{
-					__html: JSON.stringify({
-						'@context': 'https://schema.org',
-						'@type': 'WebPage',
-						name: 'Контакты',
-						description: 'Описание страницы',
-						url: 'https://rukivdom.ru/contacts',
-					}),
+					__html: JSON.stringify(organizationSchema),
 				}}
 			/>
-			<h1 className='text-2xl font-bold text-indigo-700 mb-6'>Контакты</h1>
+			<Script
+				id='contact-page-schema'
+				type='application/ld+json'
+				dangerouslySetInnerHTML={{
+					__html: JSON.stringify(contactPageSchema),
+				}}
+			/>
+
+			<header className='mb-8'>
+				<h1 className='text-3xl font-bold text-indigo-700 mb-4' itemProp='name'>
+					Контакты - Руки в дом
+				</h1>
+				<p className='text-lg text-gray-600 max-w-3xl' itemProp='description'>
+					Свяжитесь с нами для заказа услуг домашнего мастера в Оренбурге. Мы
+					быстро отвечаем на запросы и готовы помочь с любыми домашними
+					работами.
+				</p>
+			</header>
 
 			<div className='grid md:grid-cols-2 gap-8'>
-				<div className='bg-white p-6 rounded-lg shadow-md'>
+				<section
+					className='bg-white p-6 rounded-lg shadow-md'
+					itemScope
+					itemType='https://schema.org/LocalBusiness'
+				>
 					<h2 className='text-xl font-semibold text-indigo-600 mb-4'>
-						Свяжитесь с нами
+						Наши контакты
 					</h2>
 
 					<div className='space-y-4'>
-						<div>
-							<p className='font-medium text-gray-700'>Телефон:</p>
-							<p className='text-indigo-600'>+7 (XXX) XXX-XX-XX</p>
+						<div
+							itemProp='contactPoint'
+							itemScope
+							itemType='https://schema.org/ContactPoint'
+						>
+							<h3 className='font-medium text-gray-700'>Телефон:</h3>
+							<Link
+								href='tel:+79534574099'
+								className='text-indigo-600 hover:text-indigo-800 transition-colors'
+								itemProp='telephone'
+								aria-label='Позвонить по номеру +7 (953) 457-40-99'
+							>
+								+7 (953) 457-40-99
+							</Link>
+							<meta itemProp='contactType' content='customer service' />
+							<meta itemProp='areaServed' content='Оренбург' />
+							<meta itemProp='availableLanguage' content='Russian' />
 						</div>
 
 						<div>
-							<p className='font-medium text-gray-700'>Email:</p>
-							<p className='text-indigo-600'>info@rukivdom.ru</p>
+							<h3 className='font-medium text-gray-700'>Email:</h3>
+							<Link
+								href='mailto:info.rukiwdom@yandex.ru'
+								className='text-indigo-600 hover:text-indigo-800 transition-colors'
+								itemProp='email'
+								aria-label='Написать на email info.rukiwdom@yandex.ru'
+							>
+								info.rukiwdom@yandex.ru
+							</Link>
+						</div>
+
+						<div
+							itemProp='address'
+							itemScope
+							itemType='https://schema.org/PostalAddress'
+						>
+							<h3 className='font-medium text-gray-700'>Адрес:</h3>
+							<address className='text-gray-600 not-italic'>
+								<span itemProp='addressLocality'>г. Оренбург</span>,
+								<span itemProp='streetAddress'> ул. Новая, д. 4</span>
+								<meta itemProp='addressRegion' content='Оренбургская область' />
+								<meta itemProp='addressCountry' content='RU' />
+							</address>
 						</div>
 
 						<div>
-							<p className='font-medium text-gray-700'>Адрес:</p>
-							<p className='text-gray-600'>г. Москва, ул. Примерная, д. 123</p>
+							<h3 className='font-medium text-gray-700'>Часы работы:</h3>
+							<div className='text-gray-600'>
+								<time itemProp='openingHours' dateTime='Mo-Fr 09:00-20:00'>
+									Пн-Пт: 9:00 - 20:00
+								</time>
+								<br />
+								<time itemProp='openingHours' dateTime='Sa-Su 10:00-18:00'>
+									Сб-Вс: 10:00 - 18:00
+								</time>
+							</div>
 						</div>
 
 						<div>
-							<p className='font-medium text-gray-700'>Часы работы:</p>
-							<p className='text-gray-600'>Пн-Пт: 9:00 - 20:00</p>
-							<p className='text-gray-600'>Сб-Вс: 10:00 - 18:00</p>
+							<h3 className='font-medium text-gray-700'>Зона обслуживания:</h3>
+							<p className='text-gray-600' itemProp='areaServed'>
+								Оренбург
+							</p>
 						</div>
 					</div>
-				</div>
+				</section>
 
-				<div className='bg-white p-6 rounded-lg shadow-md'>
+				<section className='bg-white p-6 rounded-lg shadow-md'>
 					<h2 className='text-xl font-semibold text-indigo-600 mb-4'>
-						Напишите нам
+						Напишите нам в мессенджерах
 					</h2>
 
-					<div className='flex gap-4'>
-						<Link href='https://t.me/korablevsky'>
+					<p className='text-gray-600 mb-4'>
+						Выберите удобный способ связи. Мы отвечаем быстро в любом
+						мессенджере!
+					</p>
+
+					<div
+						className='flex gap-4'
+						role='list'
+						aria-label='Социальные сети и мессенджеры'
+					>
+						<Link
+							href='https://t.me/korablevsky'
+							className='hover:scale-110 transition-transform'
+							aria-label='Написать в Telegram'
+							role='listitem'
+						>
 							<svg
 								xmlns='http://www.w3.org/2000/svg'
 								x='0px'
@@ -73,6 +226,7 @@ export default function ContactsPage() {
 								width='48'
 								height='48'
 								viewBox='0 0 48 48'
+								aria-hidden='true'
 							>
 								<path
 									fill='#29b6f6'
@@ -92,7 +246,13 @@ export default function ContactsPage() {
 								></path>
 							</svg>
 						</Link>
-						<Link href='https://wa.me/79534574099'>
+
+						<Link
+							href='https://wa.me/79534574099'
+							className='hover:scale-110 transition-transform'
+							aria-label='Написать в WhatsApp'
+							role='listitem'
+						>
 							<svg
 								xmlns='http://www.w3.org/2000/svg'
 								x='0px'
@@ -100,6 +260,7 @@ export default function ContactsPage() {
 								width='48'
 								height='48'
 								viewBox='0,0,256,256'
+								aria-hidden='true'
 							>
 								<g
 									fill='#1ab734'
@@ -124,7 +285,13 @@ export default function ContactsPage() {
 							</svg>
 						</Link>
 
-						<Link href='https://vk.com' target='_blank'>
+						<Link
+							href='https://vk.com'
+							target='_blank'
+							className='hover:scale-110 transition-transform'
+							aria-label='Написать ВКонтакте'
+							role='listitem'
+						>
 							<svg
 								xmlns='http://www.w3.org/2000/svg'
 								x='0px'
@@ -132,6 +299,7 @@ export default function ContactsPage() {
 								width='48'
 								height='48'
 								viewBox='0 0 48 48'
+								aria-hidden='true'
 							>
 								<path
 									fill='#1976d2'
@@ -144,6 +312,13 @@ export default function ContactsPage() {
 							</svg>
 						</Link>
 					</div>
+				</section>
+				<div className='mt-2 p-4 bg-white rounded-lg'>
+					<h3 className='font-medium text-indigo-600 mb-2'>Быстрый отклик</h3>
+					<p className='text-sm text-gray-600'>
+						Мы отвечаем на сообщения в течение 15 минут в рабочее время. Для
+						срочных вопросов лучше звонить по телефону.
+					</p>
 				</div>
 			</div>
 		</main>

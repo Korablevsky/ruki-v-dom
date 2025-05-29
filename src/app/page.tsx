@@ -5,6 +5,7 @@ import { HowWork } from '@/widgets/how-work/how-work'
 import { WelcomeWidget } from '@/widgets/welcome-widget/welcome-widget'
 import { WhyUs } from '@/widgets/why-us/why-us'
 import Script from 'next/script'
+
 export default function Home() {
 	return (
 		<>
@@ -18,7 +19,7 @@ export default function Home() {
 						name: 'Руки в дом',
 						description:
 							'Установка и ремонт сантехники в Оренбурге: краны, унитазы, ванны от 500 ₽. Профессиональные сантехнические услуги и муж на час.',
-						image: 'https://ruki-v-dom.ru/logo.png',
+						image: 'https://rukiwdom.ru/favicon.png',
 						address: {
 							'@type': 'PostalAddress',
 							addressLocality: 'Оренбург',
@@ -29,8 +30,8 @@ export default function Home() {
 							latitude: '51.7727',
 							longitude: '55.1007',
 						},
-						url: 'https://ruki-v-dom.ru',
-						telephone: '+7XXXXXXXXXX',
+						url: 'https://rukiwdom.ru',
+						telephone: '+79534574099',
 						priceRange: 'от 500 ₽',
 						openingHoursSpecification: [
 							{
@@ -53,9 +54,9 @@ export default function Home() {
 							},
 						],
 						sameAs: [
-							'https://vk.com/ruki-v-dom',
-							'https://t.me/ruki-v-dom',
-							'https://instagram.com/ruki-v-dom',
+							'https://vk.com/rukiwdom',
+							'https://t.me/rukiwdom',
+							'https://instagram.com/rukiwdom',
 						],
 						aggregateRating: {
 							'@type': 'AggregateRating',
@@ -91,7 +92,7 @@ export default function Home() {
 										name: 'Установка сантехники',
 										description:
 											'Профессиональная установка кранов, смесителей, унитазов и ванн в Оренбурге',
-										url: 'https://ruki-v-dom.ru/services/installation',
+										url: 'https://rukiwdom.ru/services/sanitehnik',
 										priceSpecification: {
 											'@type': 'PriceSpecification',
 											price: 500,
@@ -106,7 +107,7 @@ export default function Home() {
 										name: 'Ремонт сантехники',
 										description:
 											'Срочный ремонт протечек, засоров и неисправностей сантехники в Оренбурге',
-										url: 'https://ruki-v-dom.ru/services/repair',
+										url: 'https://rukiwdom.ru/services/sanitehnik',
 										priceSpecification: {
 											'@type': 'PriceSpecification',
 											price: 800,
@@ -121,7 +122,7 @@ export default function Home() {
 										name: 'Муж на час',
 										description:
 											'Мелкий бытовой ремонт и установка техники в Оренбурге',
-										url: 'https://ruki-v-dom.ru/services/handyman',
+										url: 'https://rukiwdom.ru/services/master-na-chas ',
 										priceSpecification: {
 											'@type': 'PriceSpecification',
 											price: 1000,
@@ -129,7 +130,23 @@ export default function Home() {
 										},
 									},
 								},
+								{
+									'@type': 'Offer',
+									itemOffered: {
+										'@type': 'Service',
+										name: 'Сборка мебели',
+										description:
+											'Сборка мебели в Оренбурге',
+										url: 'https://rukiwdom.ru/services/sborka-mebeli',
+										priceSpecification: {
+											'@type': 'PriceSpecification',
+											price: 1000,
+											priceCurrency: 'RUB',
+										},
+									},
+								}
 							],
+							
 						},
 					}),
 				}}

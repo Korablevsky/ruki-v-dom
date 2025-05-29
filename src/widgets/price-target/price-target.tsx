@@ -75,7 +75,7 @@ export function PriceTarget() {
 									index === services.length - 1 ? 'last:rounded-br-md' : ''
 								}`}
 							>
-								{service.price}
+								от {service.price}
 							</TableCell>
 						</TableRow>
 					))}
