@@ -95,7 +95,7 @@ export default function RootLayout({
 		<html lang='ru'>
 			<Head>
 				<link rel='icon' href='/favicon.png' />
-				<link rel='apple-touch-icon' href='/apple-touch-icon.png' />
+				<link rel='apple-touch-icon' href='/favicon.png' />
 				<link rel='manifest' href='/manifest.json' />
 				<meta name='format-detection' content='telephone=no' />
 			</Head>

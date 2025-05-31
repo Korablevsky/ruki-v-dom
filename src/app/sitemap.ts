@@ -12,12 +12,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
 			priority: 1.0,
 		},
 		{
-			url: `${baseUrl}/dashboard`,
-			lastModified: currentDate,
-			changeFrequency: 'weekly',
-			priority: 0.9,
-		},
-		{
 			url: `${baseUrl}/services`,
 			lastModified: currentDate,
 			changeFrequency: 'monthly',
@@ -51,12 +45,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
 			url: `${baseUrl}/contacts`,
 			lastModified: currentDate,
 			changeFrequency: 'monthly',
-			priority: 0.7,
+			priority: 0.8,
 		},
 		{
 			url: `${baseUrl}/vacancies`,
 			lastModified: currentDate,
 			changeFrequency: 'weekly',
+			priority: 0.7,
+		},
+		{
+			url: `${baseUrl}/dashboard`,
+			lastModified: currentDate,
+			changeFrequency: 'daily',
 			priority: 0.6,
 		},
 		{
