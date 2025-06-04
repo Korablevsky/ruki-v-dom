@@ -107,11 +107,11 @@ export default function RootLayout({
 	return (
 		<html lang='ru'>
 			<Head>
-				<link
-					rel='icon'
-					href='https://rukiwdom.ru/favicon.png'
-					type='image/png'
-				/>
+				<link rel='icon' href='/favicon.png' type='image/png' />
+				<link rel='icon' href='/favicon.png' type='image/png' sizes='16x16' />
+				<link rel='icon' href='/favicon.png' type='image/png' sizes='32x32' />
+				<link rel='icon' href='/favicon.png' type='image/png' sizes='96x96' />
+				<link rel='yandex-tableau-widget' href='/manifest.json' />
 				<link rel='apple-touch-icon' href='/favicon.png' />
 				<link rel='manifest' href='/manifest.json' />
 				<meta name='format-detection' content='telephone=no' />
