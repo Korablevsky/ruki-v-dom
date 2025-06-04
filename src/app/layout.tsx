@@ -10,32 +10,58 @@ import './globals.css'
 const geistSans = Geist({
 	variable: '--font-geist-sans',
 	subsets: ['latin'],
+	display: 'swap',
 })
 
 const geistMono = Geist_Mono({
 	variable: '--font-geist-mono',
 	subsets: ['latin'],
+	display: 'swap',
 })
 
 export const metadata: Metadata = {
-	title: 'Муж на час, сантехник, сборка мебели – Руки в дом',
+	title: {
+		template: '%s | Руки в дом',
+		default: 'Муж на час, сантехник, сборка мебели – Руки в дом',
+	},
 	description:
 		'Муж на час, сантехник, сборка мебели в Оренбурге. Быстро, качественно, недорого. Закажите услуги проверенных мастеров на Руки в дом!',
 	keywords:
 		'муж на час, сантехник на дом, сборка мебели, ремонт мебели, бытовые услуги, мастер на час, услуги сантехника',
 	authors: [{ name: 'Руки в дом' }],
-	robots: 'index, follow',
+	robots: {
+		index: true,
+		follow: true,
+		googleBot: {
+			index: true,
+			follow: true,
+			'max-video-preview': -1,
+			'max-image-preview': 'large',
+			'max-snippet': -1,
+		},
+	},
+	verification: {
+		google: 'verification_token',
+		yandex: 'verification_token',
+	},
 	metadataBase: new URL('https://rukiwdom.ru'),
-	// alternates: {
-	// 	canonical: 'https://rukivdom.ru',
-	// },
+	alternates: {
+		canonical: 'https://rukiwdom.ru',
+	},
 	icons: {
 		icon: [
 			{ url: '/favicon.png', type: 'image/x-icon' },
 			{ url: '/favicon.png', sizes: '32x32', type: 'image/png' },
 		],
 		apple: [{ url: '/favicon.png', sizes: '180x180', type: 'image/png' }],
+		other: [
+			{
+				rel: 'mask-icon',
+				url: '/favicon.png',
+			},
+		],
 	},
+	manifest: '/manifest.json',
 	openGraph: {
 		title: 'Муж на час, сантехник, сборка мебели – Руки в дом',
 		description:
@@ -62,21 +88,8 @@ export const metadata: Metadata = {
 		creator: '@RukiWDom',
 	},
 	other: {
-		script: JSON.stringify({
-			'@context': 'https://schema.org',
-			'@type': 'LocalBusiness',
-			name: 'Руки в дом',
-			description: 'Услуги муж на час, сантехник, сборка мебели в Оренбурге',
-			url: 'https://rukiwdom.ru',
-			telephone: '+79534574099',
-			address: {
-				'@type': 'PostalAddress',
-				addressLocality: 'Оренбург',
-				addressCountry: 'RU',
-			},
-			image: 'https://rukiwdom.ru/favicon.png',
-			openingHours: 'Mo-Su 09:00-21:00',
-		}),
+		'yandex-verification': 'verification_token',
+		'google-site-verification': 'verification_token',
 	},
 }
 
@@ -122,7 +135,7 @@ export default function RootLayout({
 
 				{/* Структурированные данные для SEO */}
 				<Script
-					id='structured-data'
+					id='organization-schema'
 					type='application/ld+json'
 					dangerouslySetInnerHTML={{
 						__html: JSON.stringify({
@@ -130,14 +143,63 @@ export default function RootLayout({
 							'@type': 'Organization',
 							name: 'Руки в дом',
 							url: 'https://rukiwdom.ru',
-							logo: 'https://rukiwdom.ru/favicon.png',
+							logo: {
+								'@type': 'ImageObject',
+								url: 'https://rukiwdom.ru/favicon.png',
+								width: '512',
+								height: '512',
+							},
 							description:
 								'Руки в дом – Помогает найти специалистов, которые сделают работу быстро и качественно',
 							contactPoint: {
 								'@type': 'ContactPoint',
 								telephone: '+79534574099',
 								contactType: 'customer service',
+								areaServed: 'RU',
+								availableLanguage: 'Russian',
 							},
+						}),
+					}}
+				/>
+				<Script
+					id='local-business-schema'
+					type='application/ld+json'
+					dangerouslySetInnerHTML={{
+						__html: JSON.stringify({
+							'@context': 'https://schema.org',
+							'@type': 'LocalBusiness',
+							name: 'Руки в дом',
+							image: 'https://rukiwdom.ru/favicon.png',
+							'@id': 'https://rukiwdom.ru',
+							url: 'https://rukiwdom.ru',
+							telephone: '+79534574099',
+							priceRange: '₽₽',
+							address: {
+								'@type': 'PostalAddress',
+								addressLocality: 'Оренбург',
+								addressRegion: 'Оренбургская область',
+								addressCountry: 'RU',
+							},
+							geo: {
+								'@type': 'GeoCoordinates',
+								latitude: '51.7727',
+								longitude: '55.1007',
+							},
+							openingHoursSpecification: {
+								'@type': 'OpeningHoursSpecification',
+								dayOfWeek: [
+									'Monday',
+									'Tuesday',
+									'Wednesday',
+									'Thursday',
+									'Friday',
+									'Saturday',
+									'Sunday',
+								],
+								opens: '09:00',
+								closes: '21:00',
+							},
+							sameAs: ['https://vk.com/rukiwdom', 'https://t.me/korablevsky'],
 						}),
 					}}
 				/>
