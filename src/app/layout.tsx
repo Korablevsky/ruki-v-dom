@@ -94,7 +94,11 @@ export default function RootLayout({
 	return (
 		<html lang='ru'>
 			<Head>
-				<link rel='icon' href='/favicon.png' />
+				<link
+					rel='icon'
+					href='https://rukiwdom.ru/favicon.png'
+					type='image/png'
+				/>
 				<link rel='apple-touch-icon' href='/favicon.png' />
 				<link rel='manifest' href='/manifest.json' />
 				<meta name='format-detection' content='telephone=no' />
