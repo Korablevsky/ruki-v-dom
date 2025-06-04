@@ -4,7 +4,39 @@ import { HomeScreen } from '@/widgets/home-screen/home-screen'
 import { HowWork } from '@/widgets/how-work/how-work'
 import { WelcomeWidget } from '@/widgets/welcome-widget/welcome-widget'
 import { WhyUs } from '@/widgets/why-us/why-us'
+import { Metadata } from 'next'
 import Script from 'next/script'
+
+export const metadata: Metadata = {
+	title: 'Руки в дом | Сантехник и муж на час в Оренбурге',
+	description:
+		'Установка и ремонт сантехники в Оренбурге: краны, унитазы, ванны от 500 ₽. Профессиональные сантехнические услуги и муж на час.',
+	keywords:
+		'сантехник, муж на час, ремонт сантехники, установка сантехники, Оренбург',
+	openGraph: {
+		title: 'Руки в дом | Сантехник и муж на час в Оренбурге',
+		description:
+			'Установка и ремонт сантехники в Оренбурге: краны, унитазы, ванны от 500 ₽. Профессиональные сантехнические услуги и муж на час.',
+		url: 'https://rukiwdom.ru',
+		siteName: 'Руки в дом',
+		images: [
+			{
+				url: 'https://rukiwdom.ru/favicon.png',
+				width: 800,
+				height: 600,
+			},
+		],
+		locale: 'ru_RU',
+		type: 'website',
+	},
+	robots: {
+		index: true,
+		follow: true,
+	},
+	alternates: {
+		canonical: 'https://rukiwdom.ru',
+	},
+}
 
 export default function Home() {
 	return (
@@ -135,8 +167,7 @@ export default function Home() {
 									itemOffered: {
 										'@type': 'Service',
 										name: 'Сборка мебели',
-										description:
-											'Сборка мебели в Оренбурге',
+										description: 'Сборка мебели в Оренбурге',
 										url: 'https://rukiwdom.ru/services/sborka-mebeli',
 										priceSpecification: {
 											'@type': 'PriceSpecification',
@@ -144,9 +175,8 @@ export default function Home() {
 											priceCurrency: 'RUB',
 										},
 									},
-								}
+								},
 							],
-							
 						},
 					}),
 				}}
@@ -154,7 +184,7 @@ export default function Home() {
 			<WelcomeWidget />
 			<HomeScreen />
 			{/* <CarouselCustom /> */}
-	
+
 			<WhyUs />
 			<HowWork />
 			<Help />
