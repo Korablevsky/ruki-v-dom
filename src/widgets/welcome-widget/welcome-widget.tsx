@@ -1,6 +1,7 @@
 import { ModalOrderForm } from '@/features/telegram-message/modal-order-form'
 import { Button } from '@/shared/ui/button'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export function WelcomeWidget() {
 	return (
@@ -27,12 +28,14 @@ export function WelcomeWidget() {
 						Быстрый выезд, прозрачные цены. Решим любые бытовые проблемы.
 					</p>
 					<div className='flex flex-col sm:flex-row gap-4 max-w-xs sm:max-w-none mx-auto md:mx-0'>
-						<Button
-							variant='outline'
-							className='bg-transparent border-white text-white hover:bg-white hover:text-indigo-600 transition-all duration-300 text-lg font-semibold py-6  rounded-md shadow-lg hover:shadow-xl cursor-pointer w-full sm:w-auto'
-						>
-							Позвонить
-						</Button>
+						<Link href='tel:+79534574099'>
+							<Button
+								variant='outline'
+								className='bg-transparent border-white text-white hover:bg-white hover:text-indigo-600 transition-all duration-300 text-lg font-semibold py-6  rounded-md shadow-lg hover:shadow-xl cursor-pointer w-full sm:w-auto'
+							>
+								Позвонить
+							</Button>
+						</Link>
 						<div className='w-full sm:w-auto'>
 							<ModalOrderForm />
 						</div>

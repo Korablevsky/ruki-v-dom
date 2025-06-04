@@ -50,14 +50,14 @@ export const metadata: Metadata = {
 	},
 	icons: {
 		icon: [
-			{ url: '/favicon.png', type: 'image/x-icon' },
-			{ url: '/favicon.png', sizes: '32x32', type: 'image/png' },
+			{ url: '/favicon.ico', type: 'image/x-icon' },
+			{ url: '/favicon.ico', sizes: '32x32', type: 'image/x-icon' },
 		],
-		apple: [{ url: '/favicon.png', sizes: '180x180', type: 'image/png' }],
+		apple: [{ url: '/favicon.ico', sizes: '180x180', type: 'image/x-icon' }],
 		other: [
 			{
 				rel: 'mask-icon',
-				url: '/favicon.png',
+				url: '/favicon.ico',
 			},
 		],
 	},
@@ -107,12 +107,27 @@ export default function RootLayout({
 	return (
 		<html lang='ru'>
 			<Head>
-				<link rel='icon' href='/favicon.png' type='image/png' />
-				<link rel='icon' href='/favicon.png' type='image/png' sizes='16x16' />
-				<link rel='icon' href='/favicon.png' type='image/png' sizes='32x32' />
-				<link rel='icon' href='/favicon.png' type='image/png' sizes='96x96' />
+				<link rel='icon' href='/favicon.ico' type='image/x-icon' />
+				<link
+					rel='icon'
+					href='/favicon.ico'
+					type='image/x-icon'
+					sizes='16x16'
+				/>
+				<link
+					rel='icon'
+					href='/favicon.ico'
+					type='image/x-icon'
+					sizes='32x32'
+				/>
+				<link
+					rel='icon'
+					href='/favicon.ico'
+					type='image/x-icon'
+					sizes='96x96'
+				/>
 				<link rel='yandex-tableau-widget' href='/manifest.json' />
-				<link rel='apple-touch-icon' href='/favicon.png' />
+				<link rel='apple-touch-icon' href='/favicon.ico' />
 				<link rel='manifest' href='/manifest.json' />
 				<meta name='format-detection' content='telephone=no' />
 			</Head>
