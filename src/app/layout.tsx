@@ -107,22 +107,22 @@ export default function RootLayout({
 	return (
 		<html lang='ru'>
 			<Head>
-				<link rel='icon' href='/favicon.ico' type='image/x-icon' />
+				<link rel='icon' href='https://rukiwdom.ru/favicon.ico' type='image/x-icon' />
 				<link
 					rel='icon'
-					href='/favicon.ico'
+					href='https://rukiwdom.ru/favicon.ico'
 					type='image/x-icon'
 					sizes='16x16'
 				/>
 				<link
 					rel='icon'
-					href='/favicon.ico'
+					href='https://rukiwdom.ru/favicon.ico'
 					type='image/x-icon'
 					sizes='32x32'
 				/>
 				<link
 					rel='icon'
-					href='/favicon.ico'
+					href='https://rukiwdom.ru/favicon.ico'
 					type='image/x-icon'
 					sizes='96x96'
 				/>

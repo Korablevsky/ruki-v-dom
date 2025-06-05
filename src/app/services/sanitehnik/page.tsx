@@ -95,7 +95,7 @@ export default function SanitehnikPage() {
 			<main className='py-10'>
 				<header>
 					<h1 className='text-2xl font-bold text-center text-indigo-700 mb-6'>
-						Сантехник в Оренбурге
+						Услуги сантехника в Оренбурге
 					</h1>
 					<p className='text-center text-gray-600 mb-8 max-w-3xl mx-auto'>
 						Нужен надежный сантехник? Наши мастера готовы решить любые

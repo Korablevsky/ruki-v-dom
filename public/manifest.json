@@ -8,27 +8,27 @@
 	"theme_color": "#ffffff",
 	"icons": [
 		{
-			"src": "/favicon.ico",
+			"src": "https://rukiwdom.ru/favicon.ico",
 			"sizes": "16x16",
 			"type": "image/x-icon"
 		},
 		{
-			"src": "/favicon.ico",
+			"src": "https://rukiwdom.ru/favicon.ico",
 			"sizes": "32x32",
 			"type": "image/x-icon"
 		},
 		{
-			"src": "/favicon.ico",
+			"src": "https://rukiwdom.ru/favicon.ico",
 			"sizes": "96x96",
 			"type": "image/x-icon"
 		},
 		{
-			"src": "/favicon.ico",
+			"src": "https://rukiwdom.ru/favicon.ico",
 			"sizes": "192x192",
 			"type": "image/x-icon"
 		},
 		{
-			"src": "/favicon.ico",
+			"src": "https://rukiwdom.ru/favicon.ico",
 			"sizes": "512x512",
 			"type": "image/x-icon"
 		}

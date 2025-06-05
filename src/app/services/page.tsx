@@ -141,7 +141,9 @@ export default function ServicesPage() {
 								<Image
 									src={service.image}
 									alt={service.title}
-									className='w-full h-full object-cover opacity-80 group-hover:opacity-90 transition-opacity'
+									width={500}
+									height={500}
+									className='w-full h-full object-contain opacity-90 group-hover:opacity-90 transition-opacity'
 								/>
 								<div className='absolute inset-0 bg-black/20'></div>
 							</div>
