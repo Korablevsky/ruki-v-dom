@@ -50,14 +50,14 @@ export const metadata: Metadata = {
 	},
 	icons: {
 		icon: [
-			{ url: '/favicon.ico', type: 'image/x-icon' },
-			{ url: '/favicon.ico', sizes: '32x32', type: 'image/x-icon' },
+			{ url: 'https://rukiwdom.ru/favicon.ico', type: 'image/x-icon' },
+			{ url: 'https://rukiwdom.ru/favicon.ico', sizes: '32x32', type: 'image/x-icon' },
 		],
-		apple: [{ url: '/favicon.ico', sizes: '180x180', type: 'image/x-icon' }],
+		apple: [{ url: 'https://rukiwdom.ru/favicon.ico', sizes: '180x180', type: 'image/x-icon' }],
 		other: [
 			{
 				rel: 'mask-icon',
-				url: '/favicon.ico',
+				url: 'https://rukiwdom.ru/favicon.ico',
 			},
 		],
 	},
@@ -68,7 +68,7 @@ export const metadata: Metadata = {
 			'Муж на час, сантехник, сборка мебели в Оренбурге. Быстро, качественно, недорого.',
 		images: [
 			{
-				url: '/favicon.png',
+				url: 'https://rukiwdom.ru/favicon.ico',
 				width: 1200,
 				height: 630,
 				alt: 'Руки в дом - услуги сантехника и сборки мебели',
